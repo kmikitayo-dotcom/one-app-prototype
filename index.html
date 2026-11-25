@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faith and Connected Pastor One App: clickable prototypes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:wght@400;600&display=swap">
+<style>
+html,body{margin:0;background:#E9ECF1;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#14171F}
+.topbar{position:sticky;top:0;z-index:50;background:#14171F;color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 16px}
+.topbar .brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;margin-right:auto}
+.topbar button{height:40px;border-radius:20px;border:1px solid #3A404C;background:transparent;color:#D5D9E0;padding:0 16px;font:600 13px Inter,system-ui,sans-serif;cursor:pointer}
+.topbar button.on{background:#C8102E;border-color:#C8102E;color:#fff}
+.view{display:none}.view.on{display:block}
+.phone-stage{display:flex;justify-content:center;padding:28px 12px 48px}
+.phone{width:390px;height:844px;border-radius:36px;overflow:hidden;box-shadow:0 0 0 10px #14171F,0 24px 60px rgba(0,0,0,.25);background:#F5F6F8}
+@media (max-width:430px){.phone-stage{padding:0}.phone{border-radius:0;box-shadow:none;width:100vw;height:calc(100vh - 60px)}.phone>div>div{width:100vw!important;height:calc(100vh - 60px)!important}}
+.note{max-width:1120px;margin:0 auto;padding:10px 16px;font-size:12px;color:#5B6270}
+#app-start{margin:0}
+#app-start a{color:#1D4F91}
+#app-start a:hover{color:#163C70}
+#app-start .card{flex:1 1 300px;min-width:0;background:#FFFFFF;border:1px solid #E3E6EB;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:#14171F}
+#app-start .card:hover{border-color:#1D4F91;box-shadow:0 6px 20px rgba(29,79,145,.12)}
+#app-member{margin:0}
+#app-member a{color:#1D4F91}
+#app-member a:hover{color:#163C70}
+#app-member button,#app-member input,#app-member textarea,#app-member select{font-family:inherit;color:#14171F}
+#app-member button{cursor:pointer}
+#app-member button:disabled{opacity:.45;cursor:not-allowed}
+#app-member .card{background:#FFFFFF;border:1px solid #E3E6EB;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+#app-member .row{display:flex;align-items:center;gap:10px}
+#app-member .btn{height:48px;border:none;border-radius:12px;background:#C8102E;color:#FFFFFF;font-size:15px;font-weight:700;padding:0 16px}
+#app-member .btn2{height:44px;border:1px solid #D3D8E0;border-radius:10px;background:#FFFFFF;font-size:13px;font-weight:600;padding:0 14px}
+#app-member .link{border:none;background:transparent;color:#1D4F91;font-size:13px;font-weight:600;min-height:44px;padding:0 4px}
+#app-member .muted{font-size:13px;color:#5B6270}
+#app-member .h{font-family:'Space Grotesk',sans-serif;font-weight:700}
+#app-member .icon{width:44px;height:44px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;padding:0}
+#app-member .chip{border-radius:18px;padding:0 12px;height:36px;font-size:12px;font-weight:600;border:1px solid #D3D8E0}
+#app-member .field{height:48px;border:1px solid #B9C0CB;border-radius:12px;padding:0 14px;font-size:15px;background:#FFFFFF;box-sizing:border-box;width:100%}
+#app-member .tab{border:none;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:600}
+#app-member .scroll{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+#app-portal{margin:0}
+#app-portal a{color:#1D4F91}
+#app-portal a:hover{color:#163C70}
+#app-portal button,#app-portal input,#app-portal select{font-family:inherit;color:#14171F}
+#app-portal button{cursor:pointer}
+#app-portal button:disabled{opacity:.45;cursor:not-allowed}
+#app-portal td,#app-portal th{padding:10px 12px;text-align:left;border-bottom:1px solid #EEF0F3;font-size:13px;white-space:nowrap}
+#app-portal th{font-size:12px;color:#5B6270;font-weight:600}
+#app-portal .panel{background:#FFFFFF;border:1px solid #E3E6EB;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+#app-portal .btn{height:44px;border:none;border-radius:10px;background:#1D4F91;color:#FFFFFF;font-size:14px;font-weight:700;padding:0 16px}
+#app-portal .btn2{height:40px;border:1px solid #D3D8E0;border-radius:10px;background:#FFFFFF;font-size:13px;font-weight:600;padding:0 12px}
+#app-portal .in{height:44px;border:1px solid #B9C0CB;border-radius:10px;padding:0 12px;font-size:14px;background:#FFFFFF;box-sizing:border-box;width:100%}
+#app-portal .lbl{font-size:13px;font-weight:600;display:flex;flex-direction:column;gap:6px}
+#app-portal .h2{margin:0;font-size:17px}
+#app-portal .muted{font-size:12px;color:#5B6270}
+#app-portal .kpi{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700}
+#app-portal .wrap{overflow-x:auto}
+#app-console{margin:0}
+#app-console a{color:#1D4F91}
+#app-console a:hover{color:#163C70}
+#app-console button,#app-console input{font-family:inherit;color:#14171F}
+#app-console button{cursor:pointer}
+#app-console button:disabled{opacity:.45;cursor:not-allowed}
+#app-console td,#app-console th{padding:10px 12px;text-align:left;border-bottom:1px solid #EEF0F3;font-size:13px;white-space:nowrap}
+#app-console th{font-size:12px;color:#5B6270;font-weight:600}
+#app-console .panel{background:#FFFFFF;border:1px solid #E3E6EB;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+#app-console .btn{height:36px;border:none;border-radius:8px;background:#1D4F91;color:#FFFFFF;font-size:12px;font-weight:700;padding:0 12px}
+#app-console .btn2{height:36px;border:1px solid #D3D8E0;border-radius:8px;background:#FFFFFF;font-size:12px;font-weight:600;padding:0 12px}
+#app-console .wrap{overflow-x:auto}
+#app-console .kpi{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">One App prototypes</span>
+  <button data-view="start" class="on">Start</button>
+  <button data-view="member">Member app</button>
+  <button data-view="portal">Church portal</button>
+  <button data-view="console">Econet console</button>
+</div>
+<div class="view on" id="view-start"><div id="app-start"></div></div>
+<div class="view" id="view-member"><div class="phone-stage"><div class="phone"><div id="app-member"></div></div></div><div class="note" style="text-align:center">Prototype with sample data. Use Reset prototype under Me to start again.</div></div>
+<div class="view" id="view-portal"><div id="app-portal"></div></div>
+<div class="view" id="view-console"><div id="app-console"></div></div>
+<template id="tpl-start">
+<div style="min-height:800px;background:#F5F6F8;font-family:Inter,system-ui,sans-serif;color:#14171F;padding:56px 24px;box-sizing:border-box">
+  <div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#C8102E">ONE APP · CLICKABLE PROTOTYPES</span>
+      <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:40px;line-height:1.1">Faith and Connected Pastor</h1>
+      <p style="margin:0;font-size:17px;line-height:1.5;color:#3D4350;max-width:720px">Three working prototypes of the One App, built from the consolidated requirements spec. Choose one to try it. All names and figures are sample data.</p>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <a class="card" href="MemberApp.dc.html">
+        <div style="width:48px;height:48px;border-radius:12px;background:#FDE8EB;color:#C8102E;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></div>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700">Member app</span>
+        <span style="font-size:14px;line-height:1.5;color:#3D4350">Choose a church, give a tithe with a receipt, read and compare Bible versions, watch live, buy event tickets and spend and support your church.</span>
+        <span style="font-size:14px;font-weight:700;color:#1D4F91">Open member app →</span>
+      </a>
+      <a class="card" href="PortalApp.dc.html">
+        <div style="width:48px;height:48px;border-radius:12px;background:#EAF0F8;color:#1D4F91;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700">Church admin portal</span>
+        <span style="font-size:14px;line-height:1.5;color:#3D4350">Switch between pastor, church admin and treasurer. See and spend earnings, approve cash-outs, upload sermons, create events, view members and manage cell groups.</span>
+        <span style="font-size:14px;font-weight:700;color:#1D4F91">Open church portal →</span>
+      </a>
+      <a class="card" href="ConsoleApp.dc.html">
+        <div style="width:48px;height:48px;border-radius:12px;background:#E3F3EA;color:#145F38;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700">Econet admin console</span>
+        <span style="font-size:14px;line-height:1.5;color:#3D4350">Approve churches, decide on fraud flags, approve the monthly commission run, moderate content and set the rate card.</span>
+        <span style="font-size:14px;font-weight:700;color:#1D4F91">Open Econet console →</span>
+      </a>
+    </div>
+    <span style="font-size:13px;color:#5B6270">Each prototype has a link back to this page. The three are not connected: a gift in the member app does not appear in the portal.</span>
+  </div>
+</div>
+</template>
+<template id="tpl-member">
+<div style="width:390px;height:844px;box-sizing:border-box;background:#F5F6F8;font-family:Inter,system-ui,sans-serif;color:#14171F;display:flex;flex-direction:column;overflow:hidden;position:relative">
+
+<template data-sc="if" value="{{ toast }}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="position:absolute;top:12px;left:16px;right:16px;z-index:20;background:#14171F;color:#FFFFFF;border-radius:12px;padding:12px 14px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2)">{{ toast }}</div>
+</template>
+
+<!-- HOME -->
+<template data-sc="if" value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <template data-sc="if" value="{{ linked }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#1D4F91;color:#FFFFFF;padding:18px 20px 20px;display:flex;flex-direction:column;gap:14px">
+      <div class="row" style="justify-content:space-between">
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;color:#D6E2F3">Good morning, Tendai</span><span class="h" style="font-size:20px">{{ churchName }}</span></div>
+        <button class="icon" aria-label="Open Me" onClick="{{ goMe }}" style="color:#FFFFFF;border:1px solid #4A73AE;border-radius:22px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg></button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+        <div style="background:#16427C;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#D6E2F3">Your purchases earned</span><span class="h" style="font-size:22px">{{ earnedText }}</span><span style="font-size:11.5px;color:#D6E2F3">for your church this year</span></div>
+        <div style="background:#16427C;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#D6E2F3">Faith Points</span><span class="h" style="font-size:22px">{{ pointsText }}</span><span style="font-size:11.5px;color:#D6E2F3">12-day streak</span></div>
+      </div>
+    </div>
+  </template>
+  <template data-sc="if" value="{{ notLinked }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#FFFFFF;padding:18px 20px;border-bottom:1px solid #E3E6EB;display:flex;flex-direction:column;gap:2px"><span class="muted">Welcome, Tendai</span><span class="h" style="font-size:20px">Today</span></div>
+  </template>
+  <div class="scroll">
+    <template data-sc="if" value="{{ notLinked }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#1D4F91;color:#FFFFFF;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#D6E2F3">CHOOSE YOUR CHURCH</span>
+        <span style="font-size:15px;line-height:1.4">Link to your church to give, join a cell group, and let what you buy earn for it.</span>
+        <div class="row"><button class="btn2" onClick="{{ goChoose }}" style="border:none;color:#1D4F91;font-weight:700">Find a church</button><button class="btn2" onClick="{{ goChoose }}" style="background:transparent;border-color:#6E92C6;color:#FFFFFF">Scan church QR</button></div>
+      </div>
+    </template>
+    <div class="card">
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#C8102E">VERSE OF THE DAY · KJV</span>
+      <span style="font-size:15px;line-height:1.45">“I can do all things through Christ which strengtheneth me.”</span>
+      <div class="row" style="justify-content:space-between"><span class="muted">Philippians 4:13</span><button class="link" onClick="{{ shareVerse }}">Share</button></div>
+    </div>
+    <div class="card" style="flex-direction:row;align-items:center;gap:12px">
+      <span style="background:#C8102E;color:#FFFFFF;font-size:11px;font-weight:700;border-radius:6px;padding:4px 7px">LIVE</span>
+      <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ liveTitle }}</span><span class="muted">{{ liveSub }}</span></div>
+      <button class="btn2" onClick="{{ goLive }}" style="background:#C8102E;color:#FFFFFF;border:none">Watch</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
+      <button onClick="{{ goGive }}" style="height:72px;border:1px solid #E3E6EB;border-radius:12px;background:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4F91" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Give</button>
+      <button onClick="{{ goBible }}" style="height:72px;border:1px solid #E3E6EB;border-radius:12px;background:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4F91" stroke-width="1.8" aria-hidden="true"><path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/></svg>Bible</button>
+      <button onClick="{{ goEvents }}" style="height:72px;border:1px solid #E3E6EB;border-radius:12px;background:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4F91" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/></svg>Tickets</button>
+      <button onClick="{{ goCell }}" style="height:72px;border:1px solid #E3E6EB;border-radius:12px;background:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4F91" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 19a6 6 0 0 1 12 0M14 19a4 4 0 0 1 7 0"/></svg>Cell group</button>
+    </div>
+    <template data-sc="if" value="{{ linked }}" hint-placeholder-val="{{ false }}">
+      <div class="card">
+        <div class="row" style="justify-content:space-between"><span style="font-size:15px;font-weight:600">Church roof project</span><span class="muted">{{ roofGivers }} givers</span></div>
+        <div style="height:8px;border-radius:4px;background:#E3E6EB;overflow:hidden"><div style="height:8px;background:#1D4F91;width:{{ roofPct }}"></div></div>
+        <div class="row" style="justify-content:space-between"><span class="muted">{{ roofText }}</span><button class="link" onClick="{{ giveRoof }}">Give</button></div>
+      </div>
+    </template>
+    <div class="card" style="background:#FFF6E5;border-color:#F3DDB0;flex-direction:row;align-items:center">
+      <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:11.5px;font-weight:700;color:#8A5300">RECOMMENDED FOR YOU</span><span style="font-size:14px;font-weight:600">EcoSure Health for your family</span><span style="font-size:13px;color:#5B4A2A">{{ recoEarn }}</span></div>
+      <button class="btn2" onClick="{{ buyEcoSure }}" style="background:#14171F;color:#FFFFFF;border:none">Buy</button>
+    </div>
+    <a href="Start.dc.html" style="font-size:12px;text-align:center;padding:8px">← All prototypes</a>
+  </div>
+</template>
+
+<!-- CHOOSE CHURCH -->
+<template data-sc="if" value="{{ isChoose }}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="background:#FFFFFF;padding:10px 12px;border-bottom:1px solid #E3E6EB"><button class="icon" aria-label="Back" onClick="{{ goHome }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="h" style="font-size:18px">Choose your church</span></div>
+  <div class="scroll">
+    <label for="q" style="font-size:13px;font-weight:600">Search by name, denomination or area</label>
+    <input id="q" class="field" value="{{ q }}" onChange="{{ onQ }}" placeholder="e.g. Glen View">
+    <template data-sc="for" list="{{ churchList }}" as="c" hint-placeholder-count="3">
+      <button onClick="{{ c.pick }}" style="text-align:left;background:#FFFFFF;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;border:{{ c.border }}">
+        <span style="font-size:15px;font-weight:700">{{ c.name }}</span><span class="muted">{{ c.meta }}</span><span class="muted">{{ c.times }}</span>
+      </button>
+    </template>
+    <template data-sc="if" value="{{ hasPick }}" hint-placeholder-val="{{ false }}">
+      <div class="card">
+        <span style="font-size:15px;font-weight:700">What {{ pickName }} will see</span>
+        <span style="font-size:13px;line-height:1.4">✓ Your number, masked (077 *** 4521), and your name if you add it</span>
+        <span style="font-size:13px;line-height:1.4">✓ Which Econet products you hold, as yes or no</span>
+        <span style="font-size:13px;line-height:1.4">✕ Never your calls, data use, spending or individual gifts</span>
+        <label class="row" style="font-size:13px;font-weight:600;min-height:44px"><input type="checkbox" checked="{{ consent }}" onChange="{{ toggleConsent }}" style="width:22px;height:22px;accent-color:#1D4F91">I agree to share this with my church</label>
+        <span style="font-size:12px;color:#5B6270">One church at a time; you can change every 90 days.</span>
+      </div>
+      <button class="btn" disabled="{{ cannotLink }}" onClick="{{ goOtp }}">Make this my church</button>
+    </template>
+  </div>
+</template>
+
+<!-- OTP -->
+<template data-sc="if" value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="background:#FFFFFF;padding:10px 12px;border-bottom:1px solid #E3E6EB"><button class="icon" aria-label="Back" onClick="{{ goChoose }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="h" style="font-size:18px">Confirm with OTP</span></div>
+  <div class="scroll">
+    <span style="font-size:15px;line-height:1.45">We sent a 4-digit code to 077 *** 4521 to confirm you are joining <strong>{{ pickName }}</strong>.</span>
+    <label for="otp" style="font-size:13px;font-weight:600">Code (any 4 digits in this prototype)</label>
+    <input id="otp" class="field" value="{{ otp }}" onChange="{{ onOtp }}" style="font-size:24px;letter-spacing:12px;text-align:center">
+    <button class="btn" disabled="{{ otpShort }}" onClick="{{ confirmLink }}">Confirm and link</button>
+  </div>
+</template>
+
+<!-- BIBLE -->
+<template data-sc="if" value="{{ isBible }}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="background:#FFFFFF;padding:10px 12px;border-bottom:1px solid #E3E6EB;justify-content:space-between">
+    <div class="row" style="gap:4px"><button class="icon" aria-label="Back" onClick="{{ goHome }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="h" style="font-size:18px">Psalm 23</span></div>
+    <button class="btn2" onClick="{{ toggleNight }}">{{ nightLabel }}</button>
+  </div>
+  <div style="padding:10px 16px;background:#FFFFFF;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #E3E6EB">
+    <span style="font-size:12px;font-weight:600;color:#5B6270">TAP UP TO TWO VERSIONS TO COMPARE</span>
+    <div class="row" style="gap:8px;flex-wrap:wrap">
+      <template data-sc="for" list="{{ versions }}" as="v" hint-placeholder-count="5">
+        <button class="chip" disabled="{{ v.locked }}" onClick="{{ v.toggle }}" style="background:{{ v.bg }};color:{{ v.fg }};border-color:{{ v.bd }}">{{ v.label }}</button>
+      </template>
+    </div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:grid;grid-template-columns:repeat({{ colCount }},minmax(0,1fr));gap:14px;align-content:start;font-family:'Source Serif 4',Georgia,serif;font-size:{{ fontSize }};line-height:1.6;background:{{ pageBg }};color:{{ pageFg }}">
+    <template data-sc="for" list="{{ columns }}" as="col" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:Inter,sans-serif;font-size:12px;font-weight:700;color:#5C86C4">{{ col.name }}</span>
+        <template data-sc="for" list="{{ col.verses }}" as="vs" hint-placeholder-count="3">
+          <button onClick="{{ vs.pick }}" style="text-align:left;border:none;padding:2px 4px;border-radius:4px;font:inherit;color:inherit;background:{{ vs.bg }};outline:{{ vs.outline }}"><sup style="font-size:11px;opacity:.7">{{ vs.n }}</sup> {{ vs.t }}</button>
+        </template>
+      </div>
+    </template>
+  </div>
+  <div class="row" style="padding:10px 16px;background:#FFFFFF;border-top:1px solid #E3E6EB;gap:6px">
+    <button class="btn2" style="flex:1" onClick="{{ toggleHighlight }}">{{ hlLabel }}</button>
+    <button class="btn2" style="flex:1" onClick="{{ bookmark }}">Bookmark</button>
+    <button class="btn2" style="flex:1" onClick="{{ shareVerse }}">Share</button>
+    <button class="btn2" style="flex:1;background:#1D4F91;color:#FFFFFF;border:none" onClick="{{ toggleAudio }}">{{ audioLabel }}</button>
+  </div>
+</template>
+
+<!-- LIVE -->
+<template data-sc="if" value="{{ isLive }}" hint-placeholder-val="{{ false }}">
+  <div style="height:220px;background:{{ liveBg }};position:relative;display:flex;align-items:center;justify-content:center;color:#FFFFFF;flex-shrink:0">
+    <div class="row" style="position:absolute;top:12px;left:12px;gap:8px"><span style="background:#C8102E;font-size:11px;font-weight:700;border-radius:6px;padding:4px 8px">LIVE</span><span style="background:rgba(0,0,0,.45);font-size:12px;border-radius:6px;padding:4px 8px">1,284 watching</span></div>
+    <button class="icon" aria-label="Close" onClick="{{ goHome }}" style="position:absolute;top:4px;right:4px;color:#FFFFFF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <span style="font-size:14px;color:#D6E2F3">{{ liveMode }}</span>
+    <button onClick="{{ toggleAudioOnly }}" style="position:absolute;bottom:12px;right:12px;height:36px;border-radius:18px;border:1px solid #FFFFFF;background:transparent;color:#FFFFFF;padding:0 12px;font-size:12px;font-weight:600">{{ audioOnlyLabel }}</button>
+  </div>
+  <div style="background:#FFFFFF;padding:14px 16px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid #E3E6EB">
+    <span class="h" style="font-size:18px">{{ liveTitle }}</span><span class="muted">{{ liveSub }}</span>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+      <button class="btn2" onClick="{{ goGive }}" style="background:#C8102E;color:#FFFFFF;border:none">Give</button>
+      <button class="btn2" onClick="{{ openPrayer }}">Prayer request</button>
+      <button class="btn2" onClick="{{ checkIn }}">{{ checkInLabel }}</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <template data-sc="if" value="{{ prayerOpen }}" hint-placeholder-val="{{ false }}">
+      <div class="card">
+        <label for="pr" style="font-size:13px;font-weight:600">Your prayer request</label>
+        <textarea id="pr" value="{{ prayer }}" onChange="{{ onPrayer }}" rows="3" style="border:1px solid #B9C0CB;border-radius:10px;padding:10px;font-size:14px;resize:none"></textarea>
+        <button class="btn" disabled="{{ prayerEmpty }}" onClick="{{ sendPrayer }}" style="height:44px">Send to the prayer team</button>
+      </div>
+    </template>
+    <span style="font-size:15px;font-weight:700">Sermon library</span>
+    <template data-sc="for" list="{{ sermons }}" as="s" hint-placeholder-count="3">
+      <div class="card" style="flex-direction:row;align-items:center;gap:12px;padding:10px 12px">
+        <div style="width:56px;height:44px;border-radius:8px;background:#DCE5F2;flex-shrink:0"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ s.title }}</span><span style="font-size:12px;color:#5B6270">{{ s.meta }}</span></div>
+        <button class="btn2" onClick="{{ s.act }}" style="padding:0 10px">{{ s.label }}</button>
+      </div>
+    </template>
+  </div>
+</template>
+
+<!-- GIVE -->
+<template data-sc="if" value="{{ isGive }}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="background:#FFFFFF;padding:10px 12px;border-bottom:1px solid #E3E6EB"><button class="icon" aria-label="Back" onClick="{{ goHome }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="h" style="font-size:18px">Give</span></div>
+  <div class="scroll" style="gap:10px">
+    <div class="card" style="flex-direction:row;justify-content:space-between;align-items:center;padding:10px 14px">
+      <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#5B6270">{{ giveToLabel }}</span><span style="font-size:15px;font-weight:600">{{ giveChurchName }}</span></div>
+      <button class="link" onClick="{{ cycleGiveChurch }}">Change</button>
+    </div>
+    <span style="font-size:13px;font-weight:600">Fund</span>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+      <template data-sc="for" list="{{ funds }}" as="f" hint-placeholder-count="6">
+        <button onClick="{{ f.pick }}" style="height:44px;border-radius:12px;font-size:13px;font-weight:600;border:{{ f.border }};background:{{ f.bg }}">{{ f.label }}</button>
+      </template>
+    </div>
+    <div role="group" aria-label="Currency" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#E3E6EB;border-radius:12px;padding:4px">
+      <button onClick="{{ setUSD }}" style="height:40px;border-radius:9px;border:none;font-size:14px;font-weight:700;background:{{ usdBg }}">USD</button>
+      <button onClick="{{ setZIG }}" style="height:40px;border-radius:9px;border:none;font-size:14px;font-weight:700;background:{{ zigBg }}">ZiG</button>
+    </div>
+    <label for="amt" style="font-size:13px;font-weight:600">Amount ({{ currency }})</label>
+    <input id="amt" class="field" value="{{ amount }}" onChange="{{ onAmount }}" style="height:56px;font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700">
+    <div class="row" style="gap:8px">
+      <template data-sc="for" list="{{ presets }}" as="p" hint-placeholder-count="4">
+        <button class="chip" onClick="{{ p.pick }}" style="background:{{ p.bg }};color:{{ p.fg }}">{{ p.label }}</button>
+      </template>
+    </div>
+    <div class="card" style="padding:4px 14px;gap:0">
+      <div class="row" style="justify-content:space-between;min-height:48px;border-bottom:1px solid #EEF0F3"><span style="font-size:14px">Pay with</span><button class="link" onClick="{{ cyclePay }}">{{ payLabel }} ▾</button></div>
+      <label class="row" style="justify-content:space-between;min-height:48px;font-size:14px">Repeat monthly<input type="checkbox" checked="{{ recurring }}" onChange="{{ toggleRecurring }}" style="width:22px;height:22px;accent-color:#1D4F91"></label>
+    </div>
+    <button class="btn" disabled="{{ amountInvalid }}" onClick="{{ openConfirm }}" style="height:52px;flex-shrink:0">{{ giveBtn }}</button>
+  </div>
+  <template data-sc="if" value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(20,23,31,.45);display:flex;align-items:flex-end;z-index:10">
+      <div style="background:#FFFFFF;width:100%;border-radius:20px 20px 0 0;padding:20px 16px 24px;display:flex;flex-direction:column;gap:12px">
+        <span class="h" style="font-size:20px">Confirm your gift</span>
+        <span style="font-size:14px;line-height:1.5">{{ confirmText }}</span>
+        <button class="btn" onClick="{{ confirmGive }}" style="height:52px">Confirm · second tap</button>
+        <button class="btn2" onClick="{{ closeConfirm }}">Cancel</button>
+      </div>
+    </div>
+  </template>
+</template>
+
+<!-- RECEIPT -->
+<template data-sc="if" value="{{ isReceipt }}" hint-placeholder-val="{{ false }}">
+  <div class="scroll" style="padding-top:36px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+      <div style="width:64px;height:64px;border-radius:32px;background:#E3F3EA;display:flex;align-items:center;justify-content:center;color:#1B7F4B"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></div>
+      <span class="h" style="font-size:24px">Thank you, Tendai</span>
+      <span class="muted">Your gift has reached {{ r.church }}. An SMS receipt is on its way.</span>
+    </div>
+    <div class="card" style="gap:0">
+      <div class="row" style="justify-content:space-between;padding-bottom:10px;border-bottom:1px dashed #D3D8E0"><span style="font-size:12px;font-weight:700;color:#5B6270">SAMPLE RECEIPT</span><span style="font-size:13px;font-weight:700">{{ r.no }}</span></div>
+      <div class="row" style="justify-content:space-between;min-height:36px"><span class="muted">Church</span><span style="font-size:13px;font-weight:600">{{ r.church }}</span></div>
+      <div class="row" style="justify-content:space-between;min-height:36px"><span class="muted">Fund</span><span style="font-size:13px;font-weight:600">{{ r.fund }}</span></div>
+      <div class="row" style="justify-content:space-between;min-height:36px"><span class="muted">Amount</span><span class="h" style="font-size:18px">{{ r.amount }}</span></div>
+      <div class="row" style="justify-content:space-between;min-height:36px"><span class="muted">Paid with</span><span style="font-size:13px;font-weight:600">{{ r.pay }}</span></div>
+      <div class="row" style="justify-content:space-between;min-height:36px"><span class="muted">Repeats</span><span style="font-size:13px;font-weight:600">{{ r.repeat }}</span></div>
+    </div>
+    <span style="background:#EAF0F8;border-radius:12px;padding:12px 14px;font-size:13px;color:#2C426A;line-height:1.4">Gifts go to the church's giving account and never count as Econet earnings.</span>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+      <button class="btn2" onClick="{{ downloadPdf }}">Download PDF</button>
+      <button class="btn2" onClick="{{ goHistory }}">Giving history</button>
+    </div>
+    <button class="btn" onClick="{{ goHome }}" style="background:#14171F">Done</button>
+  </div>
+</template>
+
+<!-- HISTORY -->
+<template data-sc="if" value="{{ isHistory }}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="background:#FFFFFF;padding:10px 12px;border-bottom:1px solid #E3E6EB"><button class="icon" aria-label="Back" onClick="{{ goMe }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="h" style="font-size:18px">Giving history</span></div>
+  <div class="scroll">
+    <template data-sc="if" value="{{ noReceipts }}" hint-placeholder-val="{{ false }}"><span class="muted">No gifts yet. Your receipts will appear here.</span></template>
+    <template data-sc="for" list="{{ receipts }}" as="h" hint-placeholder-count="2">
+      <div class="card" style="flex-direction:row;justify-content:space-between;align-items:center;padding:12px 14px">
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ h.fund }} · {{ h.church }}</span><span style="font-size:12px;color:#5B6270">{{ h.no }} · {{ h.pay }}</span></div>
+        <span style="font-size:14px;font-weight:700">{{ h.amount }}</span>
+      </div>
+    </template>
+    <button class="btn2" onClick="{{ downloadStatement }}">Download 2026 giving statement</button>
+  </div>
+</template>
+
+<!-- EVENTS -->
+<template data-sc="if" value="{{ isEvents }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;padding:16px 20px;border-bottom:1px solid #E3E6EB;display:flex;flex-direction:column;gap:2px"><span class="h" style="font-size:20px">Events</span><span class="muted">{{ eventsSub }}</span></div>
+  <div class="scroll">
+    <template data-sc="for" list="{{ eventList }}" as="e" hint-placeholder-count="3">
+      <button onClick="{{ e.open }}" style="text-align:left;background:#FFFFFF;border:1px solid #E3E6EB;border-radius:14px;padding:0;overflow:hidden;display:flex;flex-direction:column">
+        <div style="height:72px;background:{{ e.color }};padding:12px 14px;box-sizing:border-box;display:flex;align-items:flex-end;color:#FFFFFF"><span class="h" style="font-size:17px">{{ e.name }}</span></div>
+        <div style="padding:10px 14px;display:flex;justify-content:space-between;width:100%;box-sizing:border-box"><span class="muted">{{ e.when }}</span><span style="font-size:13px;font-weight:700">{{ e.from }}</span></div>
+      </button>
+    </template>
+    <template data-sc="if" value="{{ hasTickets }}" hint-placeholder-val="{{ false }}">
+      <button class="btn2" onClick="{{ goTicket }}">My tickets ({{ ticketCount }})</button>
+    </template>
+  </div>
+</template>
+
+<!-- EVENT DETAIL -->
+<template data-sc="if" value="{{ isEvent }}" hint-placeholder-val="{{ false }}">
+  <div style="background:{{ ev.color }};color:#FFFFFF;padding:10px 16px 16px;display:flex;flex-direction:column;gap:4px;flex-shrink:0">
+    <button class="icon" aria-label="Back" onClick="{{ goEvents }}" style="color:#FFFFFF;margin-left:-10px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <span style="font-size:12px;color:#E4ECF7">{{ ev.when }}</span>
+    <span class="h" style="font-size:22px;line-height:1.15">{{ ev.name }}</span>
+    <span style="font-size:13px;color:#E4ECF7">{{ ev.host }}</span>
+  </div>
+  <div class="scroll" style="gap:10px">
+    <span style="font-size:13px;font-weight:600">Choose tickets</span>
+    <template data-sc="for" list="{{ ticketTypes }}" as="t" hint-placeholder-count="3">
+      <div class="card" style="flex-direction:row;justify-content:space-between;align-items:center;padding:8px 14px">
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ t.name }}</span><span style="font-size:12px;color:#5B6270">{{ t.price }}</span></div>
+        <div class="row" style="gap:6px"><button class="btn2" aria-label="Fewer" onClick="{{ t.dec }}" style="width:44px;padding:0;font-size:18px">−</button><span style="width:20px;text-align:center;font-size:15px;font-weight:700">{{ t.qty }}</span><button class="btn2" aria-label="More" onClick="{{ t.inc }}" style="width:44px;padding:0;font-size:18px">+</button></div>
+      </div>
+    </template>
+    <span style="font-size:13px;font-weight:600">Pay with</span>
+    <div class="row" style="gap:8px;flex-wrap:wrap">
+      <template data-sc="for" list="{{ ticketPays }}" as="tp" hint-placeholder-count="4">
+        <button class="chip" disabled="{{ tp.disabled }}" onClick="{{ tp.pick }}" style="background:{{ tp.bg }};color:{{ tp.fg }}">{{ tp.label }}</button>
+      </template>
+    </div>
+    <span style="font-size:12px;color:#5B6270">{{ ticketNote }}</span>
+  </div>
+  <div class="row" style="background:#FFFFFF;border-top:1px solid #E3E6EB;padding:12px 16px 18px;gap:12px">
+    <div style="display:flex;flex-direction:column"><span style="font-size:12px;color:#5B6270">{{ ticketQtyText }}</span><span class="h" style="font-size:20px">{{ ticketTotalText }}</span></div>
+    <button class="btn" style="flex:1" disabled="{{ noTicketsPicked }}" onClick="{{ buyTickets }}">{{ buyTicketLabel }}</button>
+  </div>
+</template>
+
+<!-- TICKET -->
+<template data-sc="if" value="{{ isTicket }}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="background:#FFFFFF;padding:10px 12px;border-bottom:1px solid #E3E6EB"><button class="icon" aria-label="Back" onClick="{{ goEvents }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="h" style="font-size:18px">My tickets</span></div>
+  <div class="scroll">
+    <template data-sc="for" list="{{ myTickets }}" as="mt" hint-placeholder-count="1">
+      <div class="card" style="align-items:center;text-align:center;gap:10px;padding:18px">
+        <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#1B7F4B">WORKS OFFLINE · ALSO SENT BY SMS</span>
+        <span class="h" style="font-size:18px">{{ mt.name }}</span>
+        <span class="muted">{{ mt.when }} · {{ mt.qty }}</span>
+        <div style="padding:8px;border:1px solid #E3E6EB;border-radius:8px;display:flex"><svg width="84" height="84" viewBox="0 0 84 84" aria-hidden="true"><g fill="#14171F"><rect x="0" y="32" width="4" height="4"/><rect x="0" y="36" width="4" height="4"/><rect x="0" y="44" width="4" height="4"/><rect x="4" y="32" width="4" height="4"/><rect x="4" y="36" width="4" height="4"/><rect x="4" y="44" width="4" height="4"/><rect x="4" y="48" width="4" height="4"/><rect x="8" y="32" width="4" height="4"/><rect x="8" y="36" width="4" height="4"/><rect x="8" y="40" width="4" height="4"/><rect x="8" y="48" width="4" height="4"/><rect x="12" y="32" width="4" height="4"/><rect x="12" y="48" width="4" height="4"/><rect x="16" y="36" width="4" height="4"/><rect x="16" y="44" width="4" height="4"/><rect x="16" y="48" width="4" height="4"/><rect x="20" y="32" width="4" height="4"/><rect x="20" y="36" width="4" height="4"/><rect x="20" y="44" width="4" height="4"/><rect x="24" y="36" width="4" height="4"/><rect x="24" y="44" width="4" height="4"/><rect x="24" y="48" width="4" height="4"/><rect x="28" y="32" width="4" height="4"/><rect x="28" y="40" width="4" height="4"/><rect x="28" y="44" width="4" height="4"/><rect x="32" y="0" width="4" height="4"/><rect x="32" y="4" width="4" height="4"/><rect x="32" y="16" width="4" height="4"/><rect x="32" y="36" width="4" height="4"/><rect x="32" y="44" width="4" height="4"/><rect x="32" y="48" width="4" height="4"/><rect x="32" y="56" width="4" height="4"/><rect x="32" y="64" width="4" height="4"/><rect x="36" y="0" width="4" height="4"/><rect x="36" y="16" width="4" height="4"/><rect x="36" y="28" width="4" height="4"/><rect x="36" y="36" width="4" height="4"/><rect x="36" y="56" width="4" height="4"/><rect x="36" y="60" width="4" height="4"/><rect x="36" y="68" width="4" height="4"/><rect x="36" y="72" width="4" height="4"/><rect x="36" y="76" width="4" height="4"/><rect x="36" y="80" width="4" height="4"/><rect x="40" y="0" width="4" height="4"/><rect x="40" y="8" width="4" height="4"/><rect x="40" y="12" width="4" height="4"/><rect x="40" y="16" width="4" height="4"/><rect x="40" y="24" width="4" height="4"/><rect x="40" y="28" width="4" height="4"/><rect x="40" y="48" width="4" height="4"/><rect x="40" y="52" width="4" height="4"/><rect x="40" y="56" width="4" height="4"/><rect x="40" y="68" width="4" height="4"/><rect x="40" y="72" width="4" height="4"/><rect x="40" y="76" width="4" height="4"/><rect x="40" y="80" width="4" height="4"/><rect x="44" y="8" width="4" height="4"/><rect x="44" y="12" width="4" height="4"/><rect x="44" y="16" width="4" height="4"/><rect x="44" y="20" width="4" height="4"/><rect x="44" y="48" width="4" height="4"/><rect x="44" y="68" width="4" height="4"/><rect x="44" y="72" width="4" height="4"/><rect x="44" y="76" width="4" height="4"/><rect x="48" y="0" width="4" height="4"/><rect x="48" y="4" width="4" height="4"/><rect x="48" y="8" width="4" height="4"/><rect x="48" y="12" width="4" height="4"/><rect x="48" y="16" width="4" height="4"/><rect x="48" y="20" width="4" height="4"/><rect x="48" y="24" width="4" height="4"/><rect x="48" y="28" width="4" height="4"/><rect x="48" y="32" width="4" height="4"/><rect x="48" y="36" width="4" height="4"/><rect x="48" y="40" width="4" height="4"/><rect x="48" y="52" width="4" height="4"/><rect x="48" y="56" width="4" height="4"/><rect x="48" y="60" width="4" height="4"/><rect x="48" y="64" width="4" height="4"/><rect x="48" y="68" width="4" height="4"/><rect x="48" y="80" width="4" height="4"/><rect x="52" y="36" width="4" height="4"/><rect x="52" y="40" width="4" height="4"/><rect x="52" y="44" width="4" height="4"/><rect x="52" y="48" width="4" height="4"/><rect x="52" y="56" width="4" height="4"/><rect x="52" y="60" width="4" height="4"/><rect x="52" y="72" width="4" height="4"/><rect x="52" y="80" width="4" height="4"/><rect x="56" y="48" width="4" height="4"/><rect x="56" y="52" width="4" height="4"/><rect x="56" y="56" width="4" height="4"/><rect x="56" y="72" width="4" height="4"/><rect x="56" y="76" width="4" height="4"/><rect x="60" y="52" width="4" height="4"/><rect x="60" y="60" width="4" height="4"/><rect x="60" y="64" width="4" height="4"/><rect x="60" y="68" width="4" height="4"/><rect x="60" y="72" width="4" height="4"/><rect x="60" y="76" width="4" height="4"/><rect x="64" y="36" width="4" height="4"/><rect x="64" y="52" width="4" height="4"/><rect x="64" y="56" width="4" height="4"/><rect x="64" y="60" width="4" height="4"/><rect x="64" y="64" width="4" height="4"/><rect x="64" y="68" width="4" height="4"/><rect x="68" y="32" width="4" height="4"/><rect x="68" y="44" width="4" height="4"/><rect x="68" y="64" width="4" height="4"/><rect x="68" y="68" width="4" height="4"/><rect x="68" y="76" width="4" height="4"/><rect x="72" y="36" width="4" height="4"/><rect x="72" y="40" width="4" height="4"/><rect x="72" y="52" width="4" height="4"/><rect x="72" y="56" width="4" height="4"/><rect x="72" y="60" width="4" height="4"/><rect x="72" y="72" width="4" height="4"/><rect x="76" y="36" width="4" height="4"/><rect x="76" y="44" width="4" height="4"/><rect x="76" y="48" width="4" height="4"/><rect x="76" y="68" width="4" height="4"/><rect x="76" y="80" width="4" height="4"/><rect x="80" y="32" width="4" height="4"/><rect x="80" y="36" width="4" height="4"/><rect x="80" y="40" width="4" height="4"/><rect x="80" y="48" width="4" height="4"/><rect x="80" y="52" width="4" height="4"/><rect x="80" y="56" width="4" height="4"/><rect x="80" y="64" width="4" height="4"/><rect x="80" y="68" width="4" height="4"/><rect x="80" y="80" width="4" height="4"/></g><rect x="0" y="0" width="28" height="28" fill="#14171F"/><rect x="4" y="4" width="20" height="20" fill="#FFFFFF"/><rect x="8" y="8" width="12" height="12" fill="#14171F"/><rect x="56" y="0" width="28" height="28" fill="#14171F"/><rect x="60" y="4" width="20" height="20" fill="#FFFFFF"/><rect x="64" y="8" width="12" height="12" fill="#14171F"/><rect x="0" y="56" width="28" height="28" fill="#14171F"/><rect x="4" y="60" width="20" height="20" fill="#FFFFFF"/><rect x="8" y="64" width="12" height="12" fill="#14171F"/></svg></div>
+        <span style="font-size:12px;color:#5B6270">{{ mt.no }} · show at the gate</span>
+      </div>
+    </template>
+  </div>
+</template>
+
+<!-- SHOP -->
+<template data-sc="if" value="{{ isShop }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;padding:16px 20px;border-bottom:1px solid #E3E6EB;display:flex;flex-direction:column;gap:2px"><span class="h" style="font-size:20px">Spend and support</span><span class="muted">{{ shopSub }}</span></div>
+  <div class="scroll" style="gap:10px">
+    <template data-sc="if" value="{{ notLinked }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ goChoose }}" style="text-align:left;border:1px dashed #B9C0CB;background:#FFFFFF;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.4">You can buy for yourself now. <strong style="color:#1D4F91">Choose a church</strong> and the same purchases will earn for it.</button>
+    </template>
+    <template data-sc="for" list="{{ products }}" as="pr" hint-placeholder-count="5">
+      <div class="card" style="flex-direction:row;justify-content:space-between;align-items:center;padding:12px 14px">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:14px;font-weight:600">{{ pr.name }}</span><span style="font-size:12px;color:#5B6270">{{ pr.price }}</span><span style="font-size:11.5px;font-weight:700;border-radius:6px;padding:3px 6px;align-self:flex-start;background:{{ pr.badgeBg }};color:{{ pr.badgeFg }}">{{ pr.badge }}</span></div>
+        <button class="btn2" onClick="{{ pr.buy }}" style="border-color:#1D4F91;color:#1D4F91">Buy</button>
+      </div>
+    </template>
+  </div>
+  <template data-sc="if" value="{{ checkoutOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(20,23,31,.45);display:flex;align-items:flex-end;z-index:10">
+      <div style="background:#FFFFFF;width:100%;border-radius:20px 20px 0 0;padding:20px 16px 24px;display:flex;flex-direction:column;gap:12px">
+        <div class="row" style="justify-content:space-between"><span class="h" style="font-size:19px">{{ cart.name }}</span><span style="font-size:15px;font-weight:700">{{ cart.price }}</span></div>
+        <template data-sc="if" value="{{ linked }}" hint-placeholder-val="{{ false }}">
+          <label class="row" style="background:#EAF0F8;border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600;color:#1B3A66;min-height:44px;box-sizing:border-box"><input type="checkbox" checked="{{ support }}" onChange="{{ toggleSupport }}" style="width:22px;height:22px;accent-color:#1D4F91">Spend and support {{ churchName }} · {{ cart.earnLabel }}</label>
+        </template>
+        <div class="row" style="justify-content:space-between"><span class="muted">Pay with</span><button class="link" onClick="{{ cyclePay }}">{{ payLabel }} ▾</button></div>
+        <button class="btn" onClick="{{ payProduct }}" style="height:52px">Pay</button>
+        <button class="btn2" onClick="{{ closeCheckout }}">Cancel</button>
+      </div>
+    </div>
+  </template>
+</template>
+
+<!-- PURCHASE DONE -->
+<template data-sc="if" value="{{ isBought }}" hint-placeholder-val="{{ false }}">
+  <div class="scroll" style="justify-content:center;align-items:center;text-align:center;gap:12px">
+    <div style="width:64px;height:64px;border-radius:32px;background:#E3F3EA;display:flex;align-items:center;justify-content:center;color:#1B7F4B"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></div>
+    <span class="h" style="font-size:22px">Payment complete</span>
+    <span style="font-size:15px">{{ cart.name }}</span>
+    <div class="card" style="width:100%;box-sizing:border-box;background:{{ boughtBg }}"><span style="font-size:15px;font-weight:700">{{ boughtLine }}</span><span class="muted">{{ boughtSub }}</span></div>
+    <button class="btn" onClick="{{ goShop }}" style="width:100%;background:#14171F">Back to shop</button>
+  </div>
+</template>
+
+<!-- CELL -->
+<template data-sc="if" value="{{ isCell }}" hint-placeholder-val="{{ false }}">
+  <div class="row" style="background:#FFFFFF;padding:10px 12px;border-bottom:1px solid #E3E6EB"><button class="icon" aria-label="Back" onClick="{{ goHome }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="h" style="font-size:18px">Cell group</span></div>
+  <div class="scroll">
+    <template data-sc="if" value="{{ notLinked }}" hint-placeholder-val="{{ false }}">
+      <div class="card"><span style="font-size:15px;font-weight:700">Cell groups belong to a church</span><span class="muted">Choose your church first, then ask to join a group near you.</span><button class="btn" onClick="{{ goChoose }}">Choose a church</button></div>
+    </template>
+    <template data-sc="if" value="{{ linked }}" hint-placeholder-val="{{ false }}">
+      <template data-sc="for" list="{{ cells }}" as="g" hint-placeholder-count="3">
+        <div class="card" style="flex-direction:row;justify-content:space-between;align-items:center">
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ g.name }}</span><span style="font-size:12px;color:#5B6270">{{ g.meta }}</span></div>
+          <button class="btn2" onClick="{{ g.act }}" disabled="{{ g.disabled }}">{{ g.label }}</button>
+        </div>
+      </template>
+      <div class="card"><span style="font-size:14px;font-weight:700">Next meeting</span><span class="muted">Thursday 18:00 · Reading plan: Psalms, day 4 of 7</span></div>
+    </template>
+  </div>
+</template>
+
+<!-- ME -->
+<template data-sc="if" value="{{ isMe }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FFFFFF;padding:16px 20px;border-bottom:1px solid #E3E6EB;display:flex;flex-direction:column;gap:2px"><span class="h" style="font-size:20px">Tendai M.</span><span class="muted">077 *** 4521 · {{ pointsText }} Faith Points</span></div>
+  <div class="scroll" style="gap:10px">
+    <div class="card"><span style="font-size:12px;color:#5B6270">My church</span><span style="font-size:15px;font-weight:700">{{ myChurchText }}</span>
+      <div class="row"><button class="btn2" onClick="{{ goChoose }}">{{ changeChurchLabel }}</button><template data-sc="if" value="{{ linked }}" hint-placeholder-val="{{ false }}"><button class="btn2" onClick="{{ leaveChurch }}">Leave church</button></template></div>
+    </div>
+    <button class="card" onClick="{{ goHistory }}" style="text-align:left;flex-direction:row;justify-content:space-between;align-items:center"><span style="font-size:14px;font-weight:600">Giving history and statements</span><span class="muted">{{ receiptCount }}</span></button>
+    <button class="card" onClick="{{ goTicket }}" style="text-align:left;flex-direction:row;justify-content:space-between;align-items:center"><span style="font-size:14px;font-weight:600">My tickets</span><span class="muted">{{ ticketCount }}</span></button>
+    <div class="card" style="gap:0;padding:4px 14px">
+      <label class="row" style="justify-content:space-between;min-height:48px;font-size:14px;border-bottom:1px solid #EEF0F3">Premium faith subscription<input type="checkbox" checked="{{ premium }}" onChange="{{ togglePremium }}" style="width:22px;height:22px;accent-color:#1D4F91"></label>
+      <label class="row" style="justify-content:space-between;min-height:48px;font-size:14px;border-bottom:1px solid #EEF0F3">Verse of the day alerts<input type="checkbox" checked="{{ notifVerse }}" onChange="{{ toggleNotifVerse }}" style="width:22px;height:22px;accent-color:#1D4F91"></label>
+      <label class="row" style="justify-content:space-between;min-height:48px;font-size:14px">Marketing messages<input type="checkbox" checked="{{ notifMkt }}" onChange="{{ toggleNotifMkt }}" style="width:22px;height:22px;accent-color:#1D4F91"></label>
+    </div>
+    <button class="btn2" onClick="{{ resetDemo }}">Reset prototype</button>
+    <a href="Start.dc.html" class="btn2" style="display:flex;align-items:center;justify-content:center;text-decoration:none;color:#1D4F91">← All prototypes</a>
+  </div>
+</template>
+
+<template data-sc="if" value="{{ showNav }}" hint-placeholder-val="{{ true }}">
+  <nav aria-label="Main menu" style="background:#FFFFFF;border-top:1px solid #E3E6EB;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:68px;flex-shrink:0">
+    <template data-sc="for" list="{{ tabs }}" as="tb" hint-placeholder-count="5">
+      <button class="tab" onClick="{{ tb.go }}" style="color:{{ tb.color }}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="{{ tb.icon }}"/></svg>{{ tb.label }}
+      </button>
+    </template>
+  </nav>
+</template>
+</div>
+</template>
+<template id="tpl-portal">
+<div style="min-height:1100px;background:#F5F6F8;font-family:Inter,system-ui,sans-serif;color:#14171F;display:flex;flex-wrap:wrap;position:relative">
+  <nav aria-label="Portal menu" style="flex:1 1 220px;max-width:260px;background:#14171F;color:#FFFFFF;padding:20px 12px;box-sizing:border-box;display:flex;flex-direction:column;gap:4px">
+    <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;padding:0 10px 4px">Church Portal</span>
+    <span style="font-size:12px;color:#AEB4BF;padding:0 10px 12px">Glen View Assembly</span>
+    <label for="role" style="font-size:12px;color:#AEB4BF;padding:0 10px">Signed in as (prototype switch)</label>
+    <select id="role" value="{{ role }}" onChange="{{ onRole }}" style="margin:4px 10px 14px;height:40px;border-radius:8px;border:none;padding:0 8px;font-size:13px">
+      <option value="Pastor">Senior pastor</option><option value="Admin">Church admin</option><option value="Treasurer">Treasurer</option>
+    </select>
+    <template data-sc="for" list="{{ menu }}" as="m" hint-placeholder-count="7">
+      <button onClick="{{ m.go }}" style="text-align:left;border:none;border-radius:8px;padding:11px 10px;font-size:14px;background:{{ m.bg }};color:{{ m.fg }};font-weight:{{ m.fw }}">{{ m.label }}</button>
+    </template>
+    <a href="Start.dc.html" style="margin-top:16px;color:#D5D9E0;padding:11px 10px;font-size:13px">← All prototypes</a>
+  </nav>
+
+  <main style="flex:999 1 560px;min-width:0;padding:28px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px;max-width:1200px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:28px">{{ title }}</h1><span style="font-size:14px;color:#5B6270">{{ roleLine }}</span></div>
+      <button class="btn" onClick="{{ toggleLive }}" style="background:{{ liveBtnBg }}">{{ liveBtn }}</button>
+    </div>
+    <template data-sc="if" value="{{ toast }}" hint-placeholder-val="{{ false }}"><div role="status" style="background:#14171F;color:#FFFFFF;border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600">{{ toast }}</div></template>
+    <template data-sc="if" value="{{ isLive }}" hint-placeholder-val="{{ false }}"><div style="background:#FDE8EB;color:#9E0C24;border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600">You are live · 1,284 watching · the recording will be saved to the sermon library</div></template>
+
+    <!-- DASHBOARD -->
+    <template data-sc="if" value="{{ sDash }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+        <div class="panel" style="gap:6px"><span class="muted">Linked members</span><span class="kpi">412 <span style="font-size:15px;color:#5B6270;font-weight:500">of 500</span></span></div>
+        <div class="panel" style="gap:6px"><span class="muted">Earnings this month</span><span class="kpi">$486.50</span><span style="font-size:12px;color:#8A5300;font-weight:600">Provisional · credited 5 Dec</span></div>
+        <div class="panel" style="gap:6px;background:#1D4F91;border-color:#1D4F91;color:#FFFFFF"><span style="font-size:12px;color:#D6E2F3">Econet account balance</span><span class="kpi">{{ balanceText }}</span><span style="font-size:12px;color:#D6E2F3">Econet products only · no cash-out</span></div>
+        <div class="panel" style="gap:6px"><span class="muted">Giving account (USD)</span><span class="kpi">{{ givingText }}</span><span class="muted">Cash-out needs pastor and treasurer</span></div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="panel" style="flex:1 1 380px"><h2 class="h2">Needs your attention</h2>
+          <template data-sc="if" value="{{ noTasks }}" hint-placeholder-val="{{ false }}"><span class="muted">Nothing waiting for you.</span></template>
+          <template data-sc="for" list="{{ tasks }}" as="t" hint-placeholder-count="2">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #EEF0F3;padding-bottom:10px"><span style="font-size:14px">{{ t.text }}</span><button class="btn2" onClick="{{ t.go }}">Open</button></div>
+          </template>
+        </div>
+        <div class="panel" style="flex:1 1 300px"><h2 class="h2">Pastor tier: Silver</h2>
+          <div style="height:8px;border-radius:4px;background:#E3E6EB"><div style="width:75%;height:8px;border-radius:4px;background:#1D4F91"></div></div>
+          <span style="font-size:14px;line-height:1.45">262 members on EcoSure packages. <strong>88 more unlock Gold</strong>.</span>
+        </div>
+      </div>
+    </template>
+
+    <!-- EARNINGS AND SPEND -->
+    <template data-sc="if" value="{{ sSpend }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="panel" style="flex:2 1 460px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><h2 class="h2">Spend on Econet products</h2><span class="muted">Balance {{ balanceText }} · second approver over $200</span></div>
+          <template data-sc="for" list="{{ catalog }}" as="c" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #E3E6EB;border-radius:10px;padding:10px 12px">
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ c.name }}</span><span class="muted">{{ c.priceText }}</span></div>
+              <button class="btn2" disabled="{{ c.disabled }}" onClick="{{ c.buy }}" style="border-color:#1D4F91;color:#1D4F91">{{ c.cta }}</button>
+            </div>
+          </template>
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#F5F6F8;border-radius:10px;padding:10px 12px"><span style="font-size:13px">Cash out commission</span><button class="btn2" onClick="{{ tryCashCommission }}">Cash out</button></div>
+        </div>
+        <div class="panel" style="flex:1 1 320px"><h2 class="h2">Approvals and history</h2>
+          <template data-sc="for" list="{{ spendRows }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid #EEF0F3;padding-bottom:10px">
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ r.name }} · {{ r.priceText }}</span><span style="font-size:12px;color:{{ r.statusColor }};font-weight:600">{{ r.status }}</span></div>
+              <template data-sc="if" value="{{ r.canApprove }}" hint-placeholder-val="{{ false }}"><button class="btn" onClick="{{ r.approve }}" style="height:36px;font-size:12px">Approve</button></template>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div class="panel"><h2 class="h2">What earned it this month</h2>
+        <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Stream</th><th>Count</th><th>Rate</th><th style="text-align:right">Amount</th></tr></thead><tbody>
+          <tr><td>Airtime through the church</td><td>$1,850 sold</td><td>12%</td><td style="text-align:right">$222.00</td></tr>
+          <tr><td>EcoSure Health and Funeral</td><td>96</td><td>$1 each</td><td style="text-align:right">$96.00</td></tr>
+          <tr><td>My Econet / SuperApp registrations</td><td>71</td><td>$1 each</td><td style="text-align:right">$71.00</td></tr>
+          <tr><td>New lines</td><td>39</td><td>$0.50 each</td><td style="text-align:right">$19.50</td></tr>
+          <tr><td>Content revenue share</td><td>3,880 qualified views</td><td>Pool share</td><td style="text-align:right">$78.00</td></tr>
+        </tbody></table></div>
+      </div>
+    </template>
+
+    <!-- GIVING -->
+    <template data-sc="if" value="{{ sGiving }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="panel" style="flex:1 1 340px"><h2 class="h2">Giving by fund (USD, totals)</h2>
+          <div style="display:flex;justify-content:space-between;font-size:14px;border-bottom:1px solid #EEF0F3;padding-bottom:8px"><span>Tithes</span><strong>$4,910</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;border-bottom:1px solid #EEF0F3;padding-bottom:8px"><span>Offerings</span><strong>$1,180</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;border-bottom:1px solid #EEF0F3;padding-bottom:8px"><span>Church roof project</span><strong>$960</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px"><span>Event tickets</span><strong>$190</strong></div>
+          <button class="btn2" onClick="{{ exportGiving }}">Export to Excel</button>
+        </div>
+        <div class="panel" style="flex:1 1 340px"><h2 class="h2">Cash out the giving account</h2>
+          <span class="muted">Balance {{ givingText }}. Needs both the pastor and the treasurer.</span>
+          <label class="lbl" for="co">Amount (USD)<input id="co" class="in" value="{{ cashAmt }}" onChange="{{ onCashAmt }}"></label>
+          <button class="btn" disabled="{{ cashDisabled }}" onClick="{{ requestCash }}">Request cash-out</button>
+          <template data-sc="for" list="{{ cashRows }}" as="c" hint-placeholder-count="1">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;background:#F5F6F8;border-radius:10px;padding:10px 12px">
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ c.amountText }}</span><span style="font-size:12px;color:{{ c.color }};font-weight:600">{{ c.status }}</span></div>
+              <template data-sc="if" value="{{ c.canApprove }}" hint-placeholder-val="{{ false }}"><button class="btn" onClick="{{ c.approve }}" style="height:36px;font-size:12px">Approve as {{ roleName }}</button></template>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div class="panel"><h2 class="h2">Individual gifts</h2>
+        <template data-sc="if" value="{{ isTreasurer }}" hint-placeholder-val="{{ false }}">
+          <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Receipt</th><th>Giver</th><th>Fund</th><th>Channel</th><th style="text-align:right">Amount</th></tr></thead><tbody>
+            <tr><td>GVA-2026-004817</td><td>Tendai M. · 077 *** 4521</td><td>Tithe</td><td>App</td><td style="text-align:right">USD 20.00</td></tr>
+            <tr><td>GVA-2026-004816</td><td>Nyasha C. · 077 *** 7710</td><td>Roof project</td><td>USSD</td><td style="text-align:right">USD 10.00</td></tr>
+            <tr><td>GVA-2026-004815</td><td>Visitor · 071 *** 3304</td><td>Offering</td><td>QR</td><td style="text-align:right">ZiG 250.00</td></tr>
+          </tbody></table></div>
+          <button class="btn2" onClick="{{ recordCash }}" style="align-self:flex-start">Record a cash tithe</button>
+        </template>
+        <template data-sc="if" value="{{ notTreasurer }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;color:#5B6270">Only the treasurer can see individual gifts and givers. Switch role to Treasurer to see this list.</span></template>
+      </div>
+    </template>
+
+    <!-- CONTENT -->
+    <template data-sc="if" value="{{ sContent }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="panel" style="flex:1 1 360px"><h2 class="h2">Upload a sermon or content</h2>
+          <div style="border:2px dashed #B9C0CB;border-radius:12px;padding:16px;text-align:center;font-size:14px;font-weight:600">Drop video, audio, document or image</div>
+          <label class="lbl" for="ct">Title<input id="ct" class="in" value="{{ cTitle }}" onChange="{{ onCTitle }}" placeholder="e.g. Faith that works · Part 4"></label>
+          <label class="lbl" for="cv">Who can see it<select id="cv" class="in" value="{{ cVis }}" onChange="{{ onCVis }}"><option>Members only</option><option>Public</option><option>One cell group</option><option>Subscribers only</option></select></label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:13px;min-height:44px"><input type="checkbox" checked="{{ cRights }}" onChange="{{ toggleRights }}" style="width:20px;height:20px;accent-color:#1D4F91">We own this content or are licensed to share it</label>
+          <button class="btn" disabled="{{ cDisabled }}" onClick="{{ submitContent }}">Submit for Econet review</button>
+        </div>
+        <div class="panel" style="flex:1 1 420px"><h2 class="h2">Your content</h2>
+          <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Item</th><th>Visibility</th><th>Status</th><th style="text-align:right">Views</th></tr></thead><tbody>
+            <template data-sc="for" list="{{ contentRows }}" as="c" hint-placeholder-count="4">
+              <tr><td>{{ c.title }}</td><td>{{ c.vis }}</td><td><span style="border-radius:6px;padding:3px 8px;font-size:12px;font-weight:600;background:{{ c.bg }};color:{{ c.fg }}">{{ c.status }}</span></td><td style="text-align:right">{{ c.views }}</td></tr>
+            </template>
+          </tbody></table></div>
+          <template data-sc="if" value="{{ hasReview }}" hint-placeholder-val="{{ false }}"><button class="btn2" onClick="{{ simulateApprove }}" style="align-self:flex-start">Prototype: Econet approves the next item</button></template>
+        </div>
+      </div>
+    </template>
+
+    <!-- EVENTS -->
+    <template data-sc="if" value="{{ sEvents }}" hint-placeholder-val="{{ false }}">
+      <div class="panel"><h2 class="h2">Create an event</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+          <label class="lbl" for="en">Name<input id="en" class="in" value="{{ eName }}" onChange="{{ onEName }}" placeholder="e.g. Women's conference"></label>
+          <label class="lbl" for="ed">Date<input id="ed" class="in" value="{{ eDate }}" onChange="{{ onEDate }}" placeholder="Sat 17 Jan"></label>
+          <label class="lbl" for="ep">Ticket price (USD, 0 = free)<input id="ep" class="in" value="{{ ePrice }}" onChange="{{ onEPrice }}"></label>
+          <label class="lbl" for="ec">Capacity<input id="ec" class="in" value="{{ eCap }}" onChange="{{ onECap }}"></label>
+          <label class="lbl" for="ea">Audience<select id="ea" class="in" value="{{ eAud }}" onChange="{{ onEAud }}"><option>Public</option><option>Members only</option><option>One cell group</option></select></label>
+        </div>
+        <button class="btn" disabled="{{ eDisabled }}" onClick="{{ createEvent }}" style="align-self:flex-start">Publish event</button>
+      </div>
+      <div class="panel"><h2 class="h2">Events and tickets</h2>
+        <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Event</th><th>Date</th><th>Audience</th><th>Price</th><th>Sold</th><th>Ushers</th><th style="text-align:right">Income</th><th></th></tr></thead><tbody>
+          <template data-sc="for" list="{{ eventRows }}" as="e" hint-placeholder-count="3">
+            <tr><td>{{ e.name }}</td><td>{{ e.date }}</td><td>{{ e.aud }}</td><td>{{ e.priceText }}</td><td>{{ e.sold }} / {{ e.cap }}</td><td>{{ e.ushers }}</td><td style="text-align:right">{{ e.income }}</td><td><div style="display:flex;gap:6px"><button class="btn2" onClick="{{ e.addUsher }}">Add usher</button><button class="btn2" onClick="{{ e.message }}">Message holders</button></div></td></tr>
+          </template>
+        </tbody></table></div>
+        <span class="muted">Ticket income settles to the giving account less the platform fee.</span>
+      </div>
+    </template>
+
+    <!-- MEMBERS -->
+    <template data-sc="if" value="{{ sMembers }}" hint-placeholder-val="{{ false }}">
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 class="h2">Members · 412 linked</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label for="ms" style="font-size:13px;font-weight:600">Search</label><input id="ms" class="in" value="{{ mq }}" onChange="{{ onMq }}" placeholder="Name, cell or ministry" style="width:220px"><button class="btn2" onClick="{{ messageAll }}">Message these members</button></div>
+        </div>
+        <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Member</th><th>Number</th><th>Joined by</th><th>Cell group</th><th>Ministry</th><th>EcoSure</th><th>Member since</th></tr></thead><tbody>
+          <template data-sc="for" list="{{ memberRows }}" as="m" hint-placeholder-count="5">
+            <tr><td>{{ m.name }}</td><td>{{ m.num }}</td><td>{{ m.via }}</td><td>{{ m.cell }}</td><td>{{ m.min }}</td><td>{{ m.eco }}</td><td>{{ m.since }}</td></tr>
+          </template>
+        </tbody></table></div>
+        <span class="muted">Shown with consent only: masked numbers and products held as yes or no.</span>
+      </div>
+    </template>
+
+    <!-- CELLS -->
+    <template data-sc="if" value="{{ sCells }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="panel" style="flex:1 1 320px"><h2 class="h2">Create a cell group</h2>
+          <label class="lbl" for="gn">Group name<input id="gn" class="in" value="{{ gName }}" onChange="{{ onGName }}" placeholder="e.g. Glen View 4 · Tuesday"></label>
+          <label class="lbl" for="gl">Leader<input id="gl" class="in" value="{{ gLeader }}" onChange="{{ onGLeader }}" placeholder="Leader's name"></label>
+          <button class="btn" disabled="{{ gDisabled }}" onClick="{{ createCell }}">Create group</button>
+        </div>
+        <div class="panel" style="flex:2 1 420px"><h2 class="h2">Cell groups</h2>
+          <template data-sc="for" list="{{ cellRows }}" as="g" hint-placeholder-count="3">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #EEF0F3;padding-bottom:10px">
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ g.name }}</span><span class="muted">Leader: {{ g.leader }} · {{ g.members }} members · {{ g.requests }}</span></div>
+              <button class="btn2" disabled="{{ g.noReq }}" onClick="{{ g.accept }}">Accept requests</button>
+            </div>
+          </template>
+        </div>
+      </div>
+    </template>
+  </main>
+</div>
+</template>
+<template id="tpl-console">
+<div style="min-height:1100px;background:#F5F6F8;font-family:Inter,system-ui,sans-serif;color:#14171F;display:flex;flex-wrap:wrap">
+  <nav aria-label="Console menu" style="flex:1 1 220px;max-width:260px;background:#1D4F91;color:#FFFFFF;padding:20px 12px;box-sizing:border-box;display:flex;flex-direction:column;gap:4px">
+    <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;padding:0 10px 4px">Econet Console</span>
+    <span style="font-size:12px;color:#D6E2F3;padding:0 10px 16px">Faith and Connected Pastor</span>
+    <template data-sc="for" list="{{ menu }}" as="m" hint-placeholder-count="4">
+      <button onClick="{{ m.go }}" style="text-align:left;border:none;border-radius:8px;padding:11px 10px;font-size:14px;color:#FFFFFF;background:{{ m.bg }};font-weight:{{ m.fw }}">{{ m.label }}</button>
+    </template>
+    <a href="Start.dc.html" style="margin-top:16px;color:#E4ECF7;padding:11px 10px;font-size:13px">← All prototypes</a>
+  </nav>
+  <main style="flex:999 1 560px;min-width:0;padding:28px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px;max-width:1200px">
+    <div style="display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:28px">{{ title }}</h1><span style="font-size:14px;color:#5B6270">Signed in with corporate SSO · Finance Officer · sample data</span></div>
+    <template data-sc="if" value="{{ toast }}" hint-placeholder-val="{{ false }}"><div role="status" style="background:#14171F;color:#FFFFFF;border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600">{{ toast }}</div></template>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px">
+      <div class="panel" style="gap:4px"><span style="font-size:13px;color:#5B6270">Churches waiting</span><span class="kpi">{{ waitingCount }}</span></div>
+      <div class="panel" style="gap:4px"><span style="font-size:13px;color:#5B6270">Content in review</span><span class="kpi">{{ reviewCount }}</span></div>
+      <div class="panel" style="gap:4px;background:#FFF6E5;border-color:#F3DDB0"><span style="font-size:13px;color:#6B4100">Fraud flags open</span><span class="kpi" style="color:#6B4100">{{ flagCount }}</span></div>
+      <div class="panel" style="gap:4px"><span style="font-size:13px;color:#5B6270">November run payable</span><span class="kpi">{{ payableText }}</span></div>
+    </div>
+
+    <template data-sc="if" value="{{ sApprovals }}" hint-placeholder-val="{{ true }}">
+      <div class="panel"><h2 style="margin:0;font-size:17px">Church applications</h2>
+        <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Church</th><th>Province</th><th>Declared</th><th>Denomination</th><th>Documents (AI)</th><th>Checks</th><th>Status</th><th></th></tr></thead><tbody>
+          <template data-sc="for" list="{{ apps }}" as="a" hint-placeholder-count="3">
+            <tr><td>{{ a.name }}</td><td>{{ a.prov }}</td><td>{{ a.size }}</td><td>{{ a.denom }}</td><td>{{ a.docs }}</td><td>{{ a.check }}</td><td><span style="font-weight:600;color:{{ a.color }}">{{ a.status }}</span></td>
+              <td><template data-sc="if" value="{{ a.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:6px"><button class="btn" onClick="{{ a.approve }}">Approve</button><button class="btn2" onClick="{{ a.info }}">Ask for info</button><button class="btn2" onClick="{{ a.reject }}">Reject</button></div></template></td></tr>
+          </template>
+        </tbody></table></div>
+        <span style="font-size:12px;color:#5B6270">Approval creates the church space, church code and QR, giving account, Econet-only account and admin roles.</span>
+      </div>
+    </template>
+
+    <template data-sc="if" value="{{ sRun }}" hint-placeholder-val="{{ false }}">
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 style="margin:0;font-size:17px">November commission run · {{ runStatus }}</h2>
+          <div style="display:flex;gap:8px"><button class="btn2" disabled="{{ notApproved }}" onClick="{{ exportErp }}">Export to ERP</button><button class="btn" disabled="{{ cannotApprove }}" onClick="{{ approveRun }}">Approve run</button></div></div>
+        <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Church</th><th>Qualifying</th><th>Rejected by rules</th><th>Clawbacks</th><th>Fraud flag</th><th style="text-align:right">Payable</th><th></th></tr></thead><tbody>
+          <template data-sc="for" list="{{ runRows }}" as="r" hint-placeholder-count="3">
+            <tr style="background:{{ r.bg }}"><td>{{ r.name }}</td><td>{{ r.q }}</td><td>{{ r.rej }}</td><td>{{ r.claw }}</td><td>{{ r.flag }}</td><td style="text-align:right;font-weight:600">{{ r.payText }}</td>
+              <td><template data-sc="if" value="{{ r.needsDecision }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:6px"><button class="btn" onClick="{{ r.release }}">Release</button><button class="btn2" onClick="{{ r.withhold }}">Withhold</button></div></template></td></tr>
+          </template>
+        </tbody></table></div>
+        <span style="font-size:12px;color:#5B6270">AI only flags. A Revenue Assurance analyst decides on each flagged church before the run can be approved.</span>
+      </div>
+    </template>
+
+    <template data-sc="if" value="{{ sContent }}" hint-placeholder-val="{{ false }}">
+      <div class="panel"><h2 style="margin:0;font-size:17px">Content moderation queue</h2>
+        <template data-sc="if" value="{{ queueEmpty }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;color:#5B6270">Queue is empty.</span></template>
+        <template data-sc="for" list="{{ queue }}" as="c" hint-placeholder-count="3">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #EEF0F3;padding-bottom:10px;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ c.title }}</span><span style="font-size:12px;color:#5B6270">{{ c.church }} · {{ c.kind }} · rights confirmed by uploader</span></div>
+            <div style="display:flex;gap:6px"><button class="btn" onClick="{{ c.approve }}">Approve</button><button class="btn2" onClick="{{ c.reject }}">Reject: rights</button></div>
+          </div>
+        </template>
+      </div>
+    </template>
+
+    <template data-sc="if" value="{{ sRates }}" hint-placeholder-val="{{ false }}">
+      <div class="panel"><h2 style="margin:0;font-size:17px">Rate card</h2>
+        <div class="wrap"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Product</th><th>Type</th><th>Rate</th><th>Recurring</th><th>Status</th></tr></thead><tbody>
+          <tr><td>Airtime through the church</td><td>Resale discount</td><td>12%</td><td>No</td><td style="color:#145F38;font-weight:600">Live</td></tr>
+          <tr><td>EcoSure Health / Funeral</td><td>Fixed</td><td>$1</td><td>Yes</td><td style="color:#145F38;font-weight:600">Live</td></tr>
+          <tr><td>My Econet / SuperApp registration</td><td>Fixed</td><td>$1</td><td>No</td><td style="color:#145F38;font-weight:600">Live</td></tr>
+          <tr><td>New line</td><td>Fixed</td><td>$0.50</td><td>No</td><td style="color:#145F38;font-weight:600">Live</td></tr>
+          <tr><td>Vaya ambulance</td><td>Fixed</td><td>{{ vayaRateText }}</td><td>Yes</td><td style="font-weight:600;color:{{ vayaColor }}">{{ vayaStatus }}</td></tr>
+        </tbody></table></div>
+        <template data-sc="if" value="{{ vayaPending }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+            <label for="vr" style="font-size:13px;font-weight:600;display:flex;flex-direction:column;gap:6px">Proposed Vaya rate (USD per sign-up)<input id="vr" value="{{ vayaInput }}" onChange="{{ onVaya }}" style="height:40px;border:1px solid #B9C0CB;border-radius:8px;padding:0 10px;font-size:14px;width:180px"></label>
+            <button class="btn" disabled="{{ vayaInvalid }}" onClick="{{ approveVaya }}" style="height:40px">Approve rate · effective 1 Dec</button>
+          </div>
+        </template>
+      </div>
+    </template>
+  </main>
+</div>
+</template>
+<script>
+var COMPS={};
+class DCLogic{constructor(props){this.props=props||{};this.state={};}
+  setState(p){var u=typeof p==='function'?p(this.state,this.props):p;this.state=Object.assign({},this.state,u);if(this._host)this._host.schedule();}
+  forceUpdate(){if(this._host)this._host.schedule();}}
+COMPS["start"]=(function(){
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+
+return Component;})();
+COMPS["member"]=(function(){
+var CHURCHES = [
+  { id: 'gva', name: 'Glen View Assembly', meta: 'ZAOGA FIF · Harare South · 1.2 km', times: 'Sundays 09:00 and 11:30 · English, Shona' },
+  { id: 'kwd', name: 'Kuwadzana Main', meta: 'AFM · Harare West · 4.5 km', times: 'Sundays 08:30 · Shona' },
+  { id: 'cgc', name: 'City Gospel Church', meta: 'Pentecostal · Harare CBD · 6.1 km', times: 'Sundays 10:00 · English' }
+];
+var BIBLE = {
+  KJV: ['The LORD is my shepherd; I shall not want.', 'He maketh me to lie down in green pastures: he leadeth me beside the still waters.', 'He restoreth my soul: he leadeth me in the paths of righteousness for his name’s sake.'],
+  ASV: ['Jehovah is my shepherd; I shall not want.', 'He maketh me to lie down in green pastures; He leadeth me beside still waters.', 'He restoreth my soul: He guideth me in the paths of righteousness for his name’s sake.'],
+  WEB: ['Yahweh is my shepherd: I shall lack nothing.', 'He makes me lie down in green pastures. He leads me beside still waters.', 'He restores my soul. He guides me in the paths of righteousness for his name’s sake.']
+};
+var FUNDS = ['Tithe', 'Offering', 'Thanksgiving', 'Roof project', 'Missions', 'Youth'];
+var PAYS = ['EcoCash · 077 *** 4521', 'Visa ending 1234', 'Airtime'];
+var EVENTS = [
+  { id: 'hyc', name: 'Harare Youth Conference', when: 'Sat 6 Dec · 08:00 · HICC', host: 'Glen View Assembly · public event', color: '#1D4F91', members: false, types: [{ n: 'General', p: 5 }, { n: 'VIP', p: 15 }, { n: 'Family (4 people)', p: 16 }] },
+  { id: 'car', name: 'Carol service', when: 'Sun 21 Dec · 18:00 · Glen View', host: 'Glen View Assembly · free registration', color: '#1B7F4B', members: false, types: [{ n: 'Free seat', p: 0 }] },
+  { id: 'cpl', name: 'Couples dinner', when: 'Fri 12 Dec · 19:00 · Glen View hall', host: 'Glen View Assembly · members only', color: '#8A3B12', members: true, types: [{ n: 'Couple', p: 30 }] }
+];
+var PRODUCTS = [
+  { id: 'air5', name: 'Airtime $5', price: '$5.00', earn: 0.6, earnLabel: 'church earns $0.60 (12%)' },
+  { id: 'air10', name: 'Airtime $10', price: '$10.00', earn: 1.2, earnLabel: 'church earns $1.20 (12%)' },
+  { id: 'eco', name: 'EcoSure Health · family', price: '[PRICE] / month', earn: 1, earnLabel: 'church earns $1, every month' },
+  { id: 'line', name: 'New Econet line', price: '[PRICE]', earn: 0.5, earnLabel: 'church earns $0.50' },
+  { id: 'vaya', name: 'Vaya ambulance cover', price: '[PRICE] / month', earn: 0, earnLabel: 'not yet earning for churches' }
+];
+var ICONS = {
+  home: 'M4 11l8-6 8 6v8h-5v-5H9v5H4z', shop: 'M5 8h14l-1 12H6zM9 8a3 3 0 0 1 6 0',
+  give: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
+  events: 'M4 6h16v14H4zM4 10h16M9 4v4M15 4v4', me: 'M12 5a4 4 0 1 1 0 8a4 4 0 1 1 0-8zM4 20a8 8 0 0 1 16 0'
+};
+function initial() {
+  return { screen: 'home', linked: false, churchId: null, pickId: null, consent: false, q: '', otp: '', toast: '',
+    earned: 18.4, points: 1240, roofRaised: 6400, roofGivers: 212,
+    versions: ['KJV', 'ASV'], verse: 1, highlights: {}, night: false, audio: false,
+    audioOnly: false, checkedIn: false, prayerOpen: false, prayer: '', downloads: {},
+    giveChurchId: null, fund: 'Tithe', currency: 'USD', amount: '20', pay: 0, recurring: false, confirmOpen: false,
+    receipts: [], lastReceipt: null, receiptSeq: 4817,
+    eventId: 'hyc', qty: {}, ticketPay: 'EcoCash', myTickets: [], ticketSeq: 1201,
+    cartId: null, support: true, checkoutOpen: false, lastEarn: 0, lastSupported: false,
+    joined: {}, premium: false, notifVerse: true, notifMkt: false };
+}
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = initial(); }
+  flash(msg) { this.setState({ toast: msg }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 2600); }
+  go(screen) { return () => this.setState({ screen: screen, confirmOpen: false, checkoutOpen: false }); }
+  churchById(id) { return CHURCHES.find((c) => c.id === id); }
+  renderVals() {
+    var s = this.state, self = this;
+    var church = s.linked ? this.churchById(s.churchId) : null;
+    var money = (n) => '$' + n.toFixed(2);
+    var sym = s.currency === 'USD' ? '$' : 'ZiG ';
+    var amt = parseFloat(s.amount);
+    var amountInvalid = !(amt > 0);
+    var giveChurch = this.churchById(s.giveChurchId || s.churchId || 'gva');
+    var ev = EVENTS.find((e) => e.id === s.eventId);
+    var qtyTotal = 0, total = 0;
+    ev.types.forEach((t, i) => { var q = s.qty[ev.id + i] || 0; qtyTotal += q; total += q * t.p; });
+    var pointsNeeded = Math.round(total * 100);
+    var cart = PRODUCTS.find((p) => p.id === s.cartId) || PRODUCTS[0];
+    var screens = ['home', 'choose', 'otp', 'bible', 'live', 'give', 'receipt', 'history', 'events', 'event', 'ticket', 'shop', 'bought', 'cell', 'me'];
+    var flags = {};
+    screens.forEach((n) => { flags['is' + n.charAt(0).toUpperCase() + n.slice(1)] = s.screen === n; });
+    var tabScreen = { home: 'home', shop: 'shop', give: 'give', events: 'events', me: 'me' };
+    var cols = s.versions.map((v) => ({ name: v, verses: BIBLE[v].map((t, i) => ({
+      n: i + 1, t: t,
+      bg: s.highlights[i] ? '#FFF1B8' : 'transparent',
+      outline: s.verse === i ? '2px solid #5C86C4' : 'none',
+      pick: () => self.setState({ verse: i })
+    })) }));
+    var r = s.lastReceipt || { no: '', church: '', fund: '', amount: '', pay: '', repeat: '' };
+    var sermonData = [
+      { id: 's3', title: 'Faith that works · Part 3', meta: 'Pastor Moyo · 17 Nov · 48 min' },
+      { id: 's2', title: 'Faith that works · Part 2', meta: 'Pastor Moyo · 10 Nov · 52 min' },
+      { id: 'mm', title: 'Marriage masterclass', meta: 'Premium series · 6 lessons', premium: true }
+    ];
+    return Object.assign(flags, {
+      toast: s.toast, linked: s.linked, notLinked: !s.linked,
+      churchName: church ? church.name : '',
+      earnedText: money(s.earned), pointsText: s.points.toLocaleString('en-US'),
+      liveTitle: s.linked ? 'Walking in purpose' : 'Morning prayer',
+      liveSub: s.linked ? church.name + ' · Pastor T. Moyo' : 'City Gospel Church · public service',
+      roofPct: Math.min(100, s.roofRaised / 100) + '%', roofGivers: s.roofGivers,
+      roofText: '$' + s.roofRaised.toLocaleString('en-US') + ' of $10,000 · 18 days left',
+      recoEarn: s.linked ? church.name + ' earns $1 when you sign up' : 'Cover for you and your dependants',
+      goHome: this.go('home'), goChoose: () => this.setState({ screen: 'choose', otp: '' }), goBible: this.go('bible'), goLive: this.go('live'),
+      goGive: this.go('give'), goEvents: this.go('events'), goShop: this.go('shop'), goMe: this.go('me'), goCell: this.go('cell'),
+      goHistory: this.go('history'), goTicket: this.go('ticket'),
+      shareVerse: () => this.flash('Verse card ready to share to WhatsApp, Facebook or SMS'),
+      buyEcoSure: () => this.setState({ screen: 'shop', cartId: 'eco', support: true, checkoutOpen: true }),
+      giveRoof: () => this.setState({ screen: 'give', fund: 'Roof project' }),
+      // choose
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      churchList: CHURCHES.filter((c) => (c.name + ' ' + c.meta).toLowerCase().indexOf(s.q.toLowerCase()) >= 0).map((c) => ({
+        name: c.name, meta: c.meta, times: c.times,
+        border: s.pickId === c.id ? '2px solid #1D4F91' : '1px solid #E3E6EB',
+        pick: () => self.setState({ pickId: c.id, consent: false })
+      })),
+      hasPick: !!s.pickId, pickName: s.pickId ? this.churchById(s.pickId).name : '',
+      consent: s.consent, toggleConsent: () => this.setState({ consent: !s.consent }), cannotLink: !s.consent,
+      goOtp: () => this.setState({ screen: 'otp', otp: '' }),
+      otp: s.otp, onOtp: (e) => this.setState({ otp: e.target.value.replace(/[^0-9]/g, '').slice(0, 4) }), otpShort: s.otp.length < 4,
+      confirmLink: () => { this.setState({ linked: true, churchId: s.pickId, giveChurchId: null, screen: 'home' }); this.flash('You are now linked to ' + this.churchById(s.pickId).name + '. The church admin has been told.'); },
+      // bible
+      versions: ['KJV', 'ASV', 'WEB', 'Shona (licence pending)', 'Ndebele (licence pending)'].map((v) => {
+        var on = s.versions.indexOf(v) >= 0, locked = !BIBLE[v];
+        return { label: v, locked: locked, bg: on ? '#1D4F91' : '#FFFFFF', fg: on ? '#FFFFFF' : '#14171F', bd: on ? '#1D4F91' : '#D3D8E0',
+          toggle: () => { if (locked) return; var list = s.versions.slice(); if (on) { if (list.length > 1) list = list.filter((x) => x !== v); } else { list.push(v); if (list.length > 2) list.shift(); } self.setState({ versions: list }); } };
+      }),
+      columns: cols, colCount: cols.length, fontSize: cols.length > 1 ? '15px' : '18px',
+      pageBg: s.night ? '#14171F' : '#FFFFFF', pageFg: s.night ? '#E8EAEE' : '#14171F',
+      nightLabel: s.night ? 'Day mode' : 'Night mode', toggleNight: () => this.setState({ night: !s.night }),
+      hlLabel: s.highlights[s.verse] ? 'Unhighlight' : 'Highlight',
+      toggleHighlight: () => { var h = Object.assign({}, s.highlights); h[s.verse] = !h[s.verse]; this.setState({ highlights: h }); },
+      bookmark: () => this.flash('Psalm 23:' + (s.verse + 1) + ' bookmarked and synced'),
+      audioLabel: s.audio ? 'Pause audio' : 'Play audio', toggleAudio: () => { this.setState({ audio: !s.audio }); if (!s.audio) this.flash('Playing Psalm 23 · ' + s.versions[0] + ' audio'); },
+      // live
+      liveBg: s.audioOnly ? '#2A2F3A' : '#0E1A2E', liveMode: s.audioOnly ? 'Audio only · video paused to save data' : '[Live video stream]',
+      audioOnlyLabel: s.audioOnly ? 'Back to video' : 'Audio only · saves 90%', toggleAudioOnly: () => this.setState({ audioOnly: !s.audioOnly }),
+      checkInLabel: s.checkedIn ? 'Checked in ✓' : 'Check in',
+      checkIn: () => { if (!s.linked) { this.flash('Choose a church to check in and earn points'); return; } if (s.checkedIn) return; this.setState({ checkedIn: true, points: s.points + 10 }); this.flash('Checked in · +10 Faith Points'); },
+      prayerOpen: s.prayerOpen, openPrayer: () => this.setState({ prayerOpen: !s.prayerOpen }),
+      prayer: s.prayer, onPrayer: (e) => this.setState({ prayer: e.target.value }), prayerEmpty: !s.prayer.trim(),
+      sendPrayer: () => { this.setState({ prayer: '', prayerOpen: false }); this.flash('Prayer request sent. You will get updates in your inbox.'); },
+      sermons: sermonData.map((x) => ({ title: x.title, meta: x.meta,
+        label: x.premium ? (s.premium ? 'Play' : 'Unlock') : (s.downloads[x.id] ? 'Saved ✓' : 'Download'),
+        act: () => { if (x.premium && !s.premium) { self.setState({ screen: 'me' }); self.flash('Turn on the premium subscription to unlock this series'); return; } if (x.premium) { self.flash('Playing ' + x.title); return; } var d = Object.assign({}, s.downloads); d[x.id] = true; self.setState({ downloads: d }); self.flash('Saved for offline listening'); } })),
+      // give
+      giveToLabel: s.linked && (!s.giveChurchId || s.giveChurchId === s.churchId) ? 'Giving to my church' : (s.linked ? 'Giving to another church' : 'Giving as a visitor to'),
+      giveChurchName: giveChurch.name + ' · Main campus',
+      cycleGiveChurch: () => { var i = CHURCHES.indexOf(giveChurch); this.setState({ giveChurchId: CHURCHES[(i + 1) % CHURCHES.length].id }); },
+      funds: FUNDS.map((f) => ({ label: f, border: s.fund === f ? '2px solid #1D4F91' : '1px solid #D3D8E0', bg: s.fund === f ? '#EAF0F8' : '#FFFFFF', pick: () => self.setState({ fund: f }) })),
+      currency: s.currency, usdBg: s.currency === 'USD' ? '#FFFFFF' : 'transparent', zigBg: s.currency === 'ZiG' ? '#FFFFFF' : 'transparent',
+      setUSD: () => this.setState({ currency: 'USD' }), setZIG: () => this.setState({ currency: 'ZiG' }),
+      amount: s.amount, onAmount: (e) => this.setState({ amount: e.target.value.replace(/[^0-9.]/g, '') }), amountInvalid: amountInvalid,
+      presets: ['5', '10', '20', '50'].map((p) => ({ label: sym + p, bg: s.amount === p ? '#14171F' : '#FFFFFF', fg: s.amount === p ? '#FFFFFF' : '#14171F', pick: () => self.setState({ amount: p }) })),
+      payLabel: PAYS[s.pay], cyclePay: () => this.setState({ pay: (s.pay + 1) % PAYS.length }),
+      recurring: s.recurring, toggleRecurring: () => this.setState({ recurring: !s.recurring }),
+      giveBtn: amountInvalid ? 'Enter an amount' : 'Give ' + sym + (amt || 0).toFixed(2) + ' · ' + s.fund,
+      confirmOpen: s.confirmOpen, openConfirm: () => this.setState({ confirmOpen: true }), closeConfirm: () => this.setState({ confirmOpen: false }),
+      confirmText: sym + (amt || 0).toFixed(2) + ' ' + s.fund.toLowerCase() + ' to ' + giveChurch.name + ' from ' + PAYS[s.pay] + (s.recurring ? ', repeating monthly.' : '.'),
+      confirmGive: () => {
+        var no = giveChurch.id.toUpperCase() + '-2026-00' + (s.receiptSeq + 1);
+        var rec = { no: no, church: giveChurch.name, fund: s.fund, amount: (s.currency === 'USD' ? 'USD ' : 'ZiG ') + amt.toFixed(2), pay: PAYS[s.pay], repeat: s.recurring ? 'Monthly' : 'No' };
+        var upd = { receiptSeq: s.receiptSeq + 1, lastReceipt: rec, receipts: [rec].concat(s.receipts), screen: 'receipt', confirmOpen: false };
+        if (s.fund === 'Roof project' && s.currency === 'USD') { upd.roofRaised = s.roofRaised + amt; upd.roofGivers = s.roofGivers + 1; }
+        this.setState(upd); this.flash('Receipt ' + no + ' sent by push and SMS');
+      },
+      r: r, downloadPdf: () => this.flash('Receipt PDF downloaded'),
+      receipts: s.receipts, noReceipts: s.receipts.length === 0, receiptCount: s.receipts.length + ' receipts',
+      downloadStatement: () => this.flash('2026 giving statement (PDF) downloaded'),
+      // events
+      eventsSub: s.linked ? 'Your church, your denomination and nearby' : 'Public events near you',
+      eventList: EVENTS.filter((e) => s.linked || !e.members).map((e) => ({ name: e.name, when: e.when, color: e.color,
+        from: e.types[0].p === 0 ? 'Free' : 'From $' + Math.min.apply(null, e.types.map((t) => t.p)),
+        open: () => self.setState({ screen: 'event', eventId: e.id }) })),
+      ev: ev,
+      ticketTypes: ev.types.map((t, i) => { var k = ev.id + i, q = s.qty[k] || 0; return { name: t.n, price: t.p === 0 ? 'Free' : '$' + t.p, qty: q,
+        inc: () => { var n = Object.assign({}, s.qty); n[k] = Math.min(10, q + 1); self.setState({ qty: n }); },
+        dec: () => { var n = Object.assign({}, s.qty); n[k] = Math.max(0, q - 1); self.setState({ qty: n }); } }; }),
+      ticketPays: ['EcoCash', 'Airtime', 'Card', 'Faith Points'].map((p) => { var dis = total === 0 || (p === 'Faith Points' && pointsNeeded > s.points); var on = s.ticketPay === p && total > 0;
+        return { label: p === 'Faith Points' ? 'Faith Points (' + pointsNeeded.toLocaleString('en-US') + ')' : p, disabled: dis, bg: on ? '#14171F' : '#FFFFFF', fg: on ? '#FFFFFF' : '#14171F', pick: () => self.setState({ ticketPay: p }) }; }),
+      ticketNote: 'Refunds up to 48 hours before the event. 100 Faith Points = $1 in this prototype.',
+      ticketQtyText: qtyTotal + (qtyTotal === 1 ? ' ticket' : ' tickets'), ticketTotalText: total === 0 ? 'Free' : money(total),
+      noTicketsPicked: qtyTotal === 0, buyTicketLabel: total === 0 ? 'Register' : 'Buy tickets',
+      buyTickets: () => {
+        var no = 'TKT-' + (s.ticketSeq + 1);
+        var t = { name: ev.name, when: ev.when, qty: qtyTotal + (qtyTotal === 1 ? ' person' : ' people'), no: no };
+        var upd = { myTickets: [t].concat(s.myTickets), ticketSeq: s.ticketSeq + 1, screen: 'ticket', qty: {} };
+        if (s.ticketPay === 'Faith Points' && total > 0) upd.points = s.points - pointsNeeded; else if (s.linked) upd.points = s.points + 10;
+        this.setState(upd); this.flash('Ticket ' + no + ' issued and sent by SMS');
+      },
+      hasTickets: s.myTickets.length > 0, ticketCount: s.myTickets.length, myTickets: s.myTickets,
+      // shop
+      shopSub: s.linked ? 'Purchases earn for ' + church.name : 'Buy for yourself · no church linked',
+      products: PRODUCTS.map((p) => ({ name: p.name, price: p.price,
+        badge: !s.linked ? 'Choose a church to earn for it' : (p.earn > 0 ? church.name + ' · ' + p.earnLabel : 'Not yet earning for churches'),
+        badgeBg: s.linked && p.earn > 0 ? '#E3F3EA' : '#EEF0F3', badgeFg: s.linked && p.earn > 0 ? '#145F38' : '#4A505C',
+        buy: () => self.setState({ cartId: p.id, support: true, checkoutOpen: true }) })),
+      checkoutOpen: s.checkoutOpen, cart: cart, support: s.support, toggleSupport: () => this.setState({ support: !s.support }),
+      closeCheckout: () => this.setState({ checkoutOpen: false }),
+      payProduct: () => {
+        var credited = s.linked && s.support && cart.earn > 0;
+        this.setState({ checkoutOpen: false, screen: 'bought', lastEarn: credited ? cart.earn : 0, lastSupported: credited,
+          earned: credited ? s.earned + cart.earn : s.earned, points: s.points + (s.linked ? 20 : 0) });
+      },
+      boughtBg: s.lastSupported ? '#E3F3EA' : '#F5F6F8',
+      boughtLine: s.lastSupported ? church.name + ' earned ' + money(s.lastEarn) : (s.linked ? 'Nothing was credited to a church' : 'No church linked, so nothing was credited'),
+      boughtSub: s.lastSupported ? 'Provisional until the monthly run is approved · +20 Faith Points' : (s.linked ? (cart.earn > 0 ? 'You switched support off for this purchase' : 'This product has no agreed rate yet') : 'Choose a church and future purchases can earn for it'),
+      // cell
+      cells: [{ id: 'g1', name: 'Glen View 1 · Thursday', meta: 'Leader: Mrs Chari · 14 members' }, { id: 'g3', name: 'Youth cell · Saturday', meta: 'Leader: Brother Tafara · 22 members' }, { id: 'wf', name: "Women's fellowship", meta: 'Leader: Mrs Moyo · 31 members' }].map((g) => {
+        var st = s.joined[g.id];
+        return { name: g.name, meta: g.meta, label: st ? 'Requested' : 'Ask to join', disabled: !!st,
+          act: () => { var j = Object.assign({}, s.joined); j[g.id] = true; self.setState({ joined: j }); self.flash('Request sent to the cell leader'); } };
+      }),
+      // me
+      myChurchText: s.linked ? church.name : 'No church chosen yet', changeChurchLabel: s.linked ? 'Change church' : 'Choose a church',
+      leaveChurch: () => { this.setState({ linked: false, churchId: null, pickId: null, consent: false, screen: 'home' }); this.flash('You left the church. Faith features stay; spend and support is off.'); },
+      premium: s.premium, togglePremium: () => { this.setState({ premium: !s.premium }); this.flash(s.premium ? 'Premium cancelled' : 'Premium on · billed from your Main Account'); },
+      notifVerse: s.notifVerse, toggleNotifVerse: () => this.setState({ notifVerse: !s.notifVerse }),
+      notifMkt: s.notifMkt, toggleNotifMkt: () => this.setState({ notifMkt: !s.notifMkt }),
+      resetDemo: () => this.setState(initial()),
+      // nav
+      showNav: ['home', 'shop', 'give', 'events', 'me', 'cell', 'history'].indexOf(s.screen) >= 0 && s.screen !== 'give',
+      tabs: [['home', 'Home'], ['shop', 'Shop'], ['give', 'Give'], ['events', 'Events'], ['me', 'Me']].map((t) => ({
+        label: t[1], icon: ICONS[t[0]], color: s.screen === tabScreen[t[0]] ? '#C8102E' : '#5B6270', go: self.go(t[0]) }))
+    });
+  }
+}
+
+return Component;})();
+COMPS["portal"]=(function(){
+var CATALOG = [
+  { id: 'wifi', name: 'Church WiFi · monthly (sample price)', price: 60 },
+  { id: 'stream', name: 'Live-stream data · 4 Sundays (sample price)', price: 40 },
+  { id: 'gift', name: 'Gift 1 GB bundles to 10 workers (sample price)', price: 30 },
+  { id: 'air', name: 'Airtime stock to resell (sample)', price: 250 },
+  { id: 'dev', name: 'Projector-ready laptop on Econet (sample price)', price: 420 }
+];
+var MEMBERS = [
+  { name: 'Tendai M.', num: '077 *** 4521', via: 'Church QR', cell: 'Glen View 1', min: 'Choir', eco: 'Yes', since: 'Mar 2026' },
+  { name: 'Name not shared', num: '078 *** 0193', via: 'Ambassador', cell: 'Youth cell', min: 'Youth', eco: 'No', since: 'Aug 2026' },
+  { name: 'Nyasha C.', num: '077 *** 7710', via: 'Directory', cell: '–', min: "Women's fellowship", eco: 'Yes', since: 'Oct 2026' },
+  { name: 'Farai K.', num: '071 *** 5582', via: 'Church QR', cell: 'Glen View 1', min: 'Ushers', eco: 'Yes', since: 'Jan 2026' },
+  { name: 'Rumbi T.', num: '077 *** 9034', via: 'Ambassador', cell: 'Youth cell', min: 'Youth', eco: 'No', since: 'Nov 2026' }
+];
+var MENU = [['dash', 'Dashboard'], ['spend', 'Earnings and spend'], ['giving', 'Giving and receipts'], ['content', 'Content and sermons'], ['events', 'Events and tickets'], ['members', 'Members'], ['cells', 'Cell groups']];
+var TITLES = { dash: 'Good morning, Glen View', spend: 'Earnings and spend', giving: 'Giving and receipts', content: 'Content and sermons', events: 'Events and tickets', members: 'Members', cells: 'Cell groups' };
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { section: 'dash', role: 'Pastor', toast: '', live: false, balance: 1932, giving: 7240,
+      spends: [{ name: 'Church WiFi · monthly', price: 60, status: 'done', by: 'Pastor' }], cash: [], cashAmt: '500',
+      content: [{ title: 'Faith that works · Part 3', vis: 'Members only', status: 'Published', views: '1,412' }, { title: 'Sunday service 23 Nov', vis: 'Public', status: 'Published', views: '1,206' }, { title: 'Youth worship night', vis: 'Public', status: 'In review', views: '–' }],
+      cTitle: '', cVis: 'Members only', cRights: false,
+      events: [{ name: 'Harare Youth Conference', date: 'Sat 6 Dec', aud: 'Public', price: 5, sold: 588, cap: 1000, ushers: 6 }, { name: 'Carol service', date: 'Sun 21 Dec', aud: 'Public', price: 0, sold: 214, cap: 400, ushers: 3 }],
+      eName: '', eDate: '', ePrice: '0', eCap: '200', eAud: 'Public', mq: '',
+      cells: [{ name: 'Glen View 1 · Thursday', leader: 'Mrs Chari', members: 14, req: 2 }, { name: 'Youth cell · Saturday', leader: 'Brother Tafara', members: 22, req: 1 }],
+      gName: '', gLeader: '' };
+  }
+  flash(m) { this.setState({ toast: m }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 3000); }
+  renderVals() {
+    var s = this.state, self = this;
+    var money = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var roleName = { Pastor: 'senior pastor', Admin: 'church admin', Treasurer: 'treasurer' }[s.role];
+    var canApproveSpend = s.role === 'Pastor' || s.role === 'Treasurer';
+    var pendingSpends = s.spends.filter((x) => x.status === 'pending');
+    var tasks = [];
+    pendingSpends.forEach((x) => { if (canApproveSpend && x.by !== s.role) tasks.push({ text: 'Approve spend: ' + x.name + ' · ' + money(x.price), go: () => self.setState({ section: 'spend' }) }); });
+    s.cash.forEach((c) => { if (!c.done && (s.role === 'Pastor' || s.role === 'Treasurer') && !c[s.role]) tasks.push({ text: 'Approve cash-out of ' + money(c.amount), go: () => self.setState({ section: 'giving' }) }); });
+    var reviewCount = s.content.filter((c) => c.status === 'In review').length;
+    if (reviewCount) tasks.push({ text: reviewCount + ' content item(s) waiting for Econet review', go: () => self.setState({ section: 'content' }) });
+    var cashNum = parseFloat(s.cashAmt);
+    var q = s.mq.toLowerCase();
+    return {
+      role: s.role, roleName: roleName, onRole: (e) => this.setState({ role: e.target.value }),
+      menu: MENU.map((m) => ({ label: m[1], bg: s.section === m[0] ? '#2A2F3A' : 'transparent', fg: s.section === m[0] ? '#FFFFFF' : '#D5D9E0', fw: s.section === m[0] ? 600 : 400, go: () => self.setState({ section: m[0] }) })),
+      title: TITLES[s.section], roleLine: 'Glen View Assembly · signed in as ' + roleName + ' · sample data',
+      toast: s.toast, isLive: s.live, liveBtn: s.live ? 'End live service' : 'Go live', liveBtnBg: s.live ? '#14171F' : '#C8102E',
+      toggleLive: () => { this.setState({ live: !s.live }); this.flash(s.live ? 'Live service ended · recording saved to the sermon library' : 'Members have been notified that you are live'); },
+      sDash: s.section === 'dash', sSpend: s.section === 'spend', sGiving: s.section === 'giving', sContent: s.section === 'content', sEvents: s.section === 'events', sMembers: s.section === 'members', sCells: s.section === 'cells',
+      balanceText: money(s.balance), givingText: money(s.giving), tasks: tasks, noTasks: tasks.length === 0,
+      catalog: CATALOG.map((c) => ({ name: c.name, priceText: money(c.price) + (c.price > 200 ? ' · needs a second approver' : ''), disabled: c.price > s.balance, cta: c.price > 200 ? 'Request' : 'Buy',
+        buy: () => { if (c.price > 200) { self.setState({ spends: [{ name: c.name, price: c.price, status: 'pending', by: s.role }].concat(s.spends) }); self.flash('Request sent for a second approval'); } else { self.setState({ balance: s.balance - c.price, spends: [{ name: c.name, price: c.price, status: 'done', by: s.role }].concat(s.spends) }); self.flash(c.name + ' paid from the Econet account'); } } })),
+      tryCashCommission: () => this.flash('Commission can never be cashed out. Spend it on Econet products for the church.'),
+      spendRows: s.spends.map((x, i) => ({ name: x.name, priceText: money(x.price),
+        status: x.status === 'done' ? 'Paid · by ' + x.by : 'Waiting for a second approver · requested by ' + x.by,
+        statusColor: x.status === 'done' ? '#145F38' : '#8A5300',
+        canApprove: x.status === 'pending' && canApproveSpend && x.by !== s.role,
+        approve: () => { if (x.price > s.balance) { self.flash('Not enough balance'); return; } var list = s.spends.slice(); list[i] = Object.assign({}, x, { status: 'done', by: x.by + ' and ' + s.role }); self.setState({ spends: list, balance: s.balance - x.price }); self.flash('Approved and paid'); } })),
+      exportGiving: () => this.flash('Giving report exported to Excel'),
+      cashAmt: s.cashAmt, onCashAmt: (e) => this.setState({ cashAmt: e.target.value.replace(/[^0-9.]/g, '') }),
+      cashDisabled: !(cashNum > 0) || cashNum > s.giving || s.role === 'Admin',
+      requestCash: () => { var c = { amount: cashNum, done: false }; c[s.role] = true; this.setState({ cash: [c].concat(s.cash) }); this.flash('Cash-out requested. The ' + (s.role === 'Pastor' ? 'treasurer' : 'pastor') + ' must approve it.'); },
+      cashRows: s.cash.map((c, i) => ({ amountText: money(c.amount),
+        status: c.done ? 'Approved by pastor and treasurer · paid to the church EcoCash merchant account' : 'Approved by ' + (c.Pastor ? 'pastor' : 'treasurer') + ' · waiting for ' + (c.Pastor ? 'treasurer' : 'pastor'),
+        color: c.done ? '#145F38' : '#8A5300',
+        canApprove: !c.done && (s.role === 'Pastor' || s.role === 'Treasurer') && !c[s.role],
+        approve: () => { var list = s.cash.slice(); var n = Object.assign({}, c); n[s.role] = true; n.done = !!(n.Pastor && n.Treasurer); list[i] = n; self.setState({ cash: list, giving: n.done ? s.giving - c.amount : s.giving }); self.flash(n.done ? 'Cash-out approved by both and paid' : 'Approval recorded'); } })),
+      isTreasurer: s.role === 'Treasurer', notTreasurer: s.role !== 'Treasurer',
+      recordCash: () => this.flash('Cash tithe recorded and receipt GVA-2026-004818 sent to the member'),
+      cTitle: s.cTitle, onCTitle: (e) => this.setState({ cTitle: e.target.value }), cVis: s.cVis, onCVis: (e) => this.setState({ cVis: e.target.value }),
+      cRights: s.cRights, toggleRights: () => this.setState({ cRights: !s.cRights }), cDisabled: !s.cTitle.trim() || !s.cRights,
+      submitContent: () => { this.setState({ content: [{ title: s.cTitle, vis: s.cVis, status: 'In review', views: '–' }].concat(s.content), cTitle: '', cRights: false }); this.flash('Sent to Econet moderation'); },
+      contentRows: s.content.map((c) => ({ title: c.title, vis: c.vis, status: c.status, views: c.views,
+        bg: c.status === 'Published' ? '#E3F3EA' : '#EAF0F8', fg: c.status === 'Published' ? '#145F38' : '#1B3A66' })),
+      hasReview: reviewCount > 0,
+      simulateApprove: () => { var list = s.content.slice(); var i = list.map((c) => c.status).lastIndexOf('In review'); list[i] = Object.assign({}, list[i], { status: 'Published', views: '0' }); this.setState({ content: list }); this.flash('Econet approved "' + list[i].title + '" · members notified'); },
+      eName: s.eName, onEName: (e) => this.setState({ eName: e.target.value }), eDate: s.eDate, onEDate: (e) => this.setState({ eDate: e.target.value }),
+      ePrice: s.ePrice, onEPrice: (e) => this.setState({ ePrice: e.target.value.replace(/[^0-9.]/g, '') }),
+      eCap: s.eCap, onECap: (e) => this.setState({ eCap: e.target.value.replace(/[^0-9]/g, '') }), eAud: s.eAud, onEAud: (e) => this.setState({ eAud: e.target.value }),
+      eDisabled: !s.eName.trim() || !s.eDate.trim() || !(parseInt(s.eCap, 10) > 0),
+      createEvent: () => { this.setState({ events: [{ name: s.eName, date: s.eDate, aud: s.eAud, price: parseFloat(s.ePrice) || 0, sold: 0, cap: parseInt(s.eCap, 10), ushers: 0 }].concat(s.events), eName: '', eDate: '' }); this.flash('Event published · it now shows in the member app'); },
+      eventRows: s.events.map((e, i) => ({ name: e.name, date: e.date, aud: e.aud, priceText: e.price ? money(e.price) : 'Free', sold: e.sold, cap: e.cap, ushers: e.ushers, income: money(e.price * e.sold),
+        addUsher: () => { var list = s.events.slice(); list[i] = Object.assign({}, e, { ushers: e.ushers + 1 }); self.setState({ events: list }); self.flash('Usher invited by SMS to scan tickets for ' + e.name); },
+        message: () => self.flash('Update sent to ' + e.sold + ' ticket holders (in-app and push free; SMS uses the church bundle)') })),
+      mq: s.mq, onMq: (e) => this.setState({ mq: e.target.value }),
+      memberRows: MEMBERS.filter((m) => (m.name + m.cell + m.min).toLowerCase().indexOf(q) >= 0),
+      messageAll: () => this.flash('Announcement sent to the members shown'),
+      gName: s.gName, onGName: (e) => this.setState({ gName: e.target.value }), gLeader: s.gLeader, onGLeader: (e) => this.setState({ gLeader: e.target.value }),
+      gDisabled: !s.gName.trim() || !s.gLeader.trim(),
+      createCell: () => { this.setState({ cells: s.cells.concat([{ name: s.gName, leader: s.gLeader, members: 0, req: 0 }]), gName: '', gLeader: '' }); this.flash('Cell group created · leader invited'); },
+      cellRows: s.cells.map((g, i) => ({ name: g.name, leader: g.leader, members: g.members, requests: g.req ? g.req + ' join request(s)' : 'no requests', noReq: !g.req,
+        accept: () => { var list = s.cells.slice(); list[i] = Object.assign({}, g, { members: g.members + g.req, req: 0 }); self.setState({ cells: list }); self.flash('Requests accepted'); } }))
+    };
+  }
+}
+
+return Component;})();
+COMPS["console"]=(function(){
+var MENU = [['approvals', 'Church approvals'], ['run', 'Commission run'], ['content', 'Content moderation'], ['rates', 'Rates and rules']];
+var TITLES = { approvals: 'Church approvals', run: 'Monthly commission run', content: 'Content moderation', rates: 'Rates and rules' };
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { section: 'approvals', toast: '', runApproved: false, vaya: null, vayaInput: '',
+      apps: [
+        { name: 'Budiriro Assembly', prov: 'Harare', size: 380, denom: 'Endorsed', docs: 'Verified', check: 'No issues', status: 'Waiting' },
+        { name: 'Mufakose Revival Centre', prov: 'Harare', size: 150, denom: 'Endorsed', docs: 'Name mismatch', check: 'Pastor ID name differs', status: 'Waiting' },
+        { name: 'Chitungwiza Unit L Church', prov: 'Harare', size: 620, denom: 'Endorsed', docs: 'Verified', check: 'Possible duplicate', status: 'Waiting' }
+      ],
+      run: [
+        { name: 'Glen View Assembly', q: 2086, rej: 41, claw: -4, flag: 'None', pay: 486.5, decision: 'ok' },
+        { name: 'Kuwadzana Main', q: 1402, rej: 19, claw: 0, flag: 'None', pay: 311.2, decision: 'ok' },
+        { name: 'Epworth Fellowship', q: 1950, rej: 12, claw: 0, flag: 'SIM farm pattern', pay: 402.0, decision: 'open' },
+        { name: 'Highfield Central', q: 860, rej: 7, claw: 0, flag: 'Duplicate IDs (14)', pay: 154.3, decision: 'open' }
+      ],
+      queue: [
+        { title: 'Youth worship night', church: 'Glen View Assembly', kind: 'Video' },
+        { title: 'Morning devotion · Shona', church: 'Kuwadzana Main', kind: 'Audio' },
+        { title: 'Choir anniversary concert', church: 'City Gospel Church', kind: 'Video' }
+      ] };
+  }
+  flash(m) { this.setState({ toast: m }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 3000); }
+  renderVals() {
+    var s = this.state, self = this;
+    var money = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var open = s.run.filter((r) => r.decision === 'open').length;
+    var payable = s.run.reduce((t, r) => t + (r.decision === 'ok' || r.decision === 'released' ? r.pay : 0), 0);
+    var setApp = (i, status, msg) => { var list = s.apps.slice(); list[i] = Object.assign({}, list[i], { status: status }); self.setState({ apps: list }); self.flash(msg); };
+    var setRun = (i, d, msg) => { var list = s.run.slice(); list[i] = Object.assign({}, list[i], { decision: d }); self.setState({ run: list }); self.flash(msg); };
+    var vNum = parseFloat(s.vayaInput);
+    return {
+      menu: MENU.map((m) => ({ label: m[1], bg: s.section === m[0] ? '#16427C' : 'transparent', fw: s.section === m[0] ? 600 : 400, go: () => self.setState({ section: m[0] }) })),
+      title: TITLES[s.section], toast: s.toast,
+      sApprovals: s.section === 'approvals', sRun: s.section === 'run', sContent: s.section === 'content', sRates: s.section === 'rates',
+      waitingCount: s.apps.filter((a) => a.status === 'Waiting' || a.status === 'More info requested').length,
+      reviewCount: s.queue.length, flagCount: open, payableText: money(payable),
+      apps: s.apps.map((a, i) => ({ name: a.name, prov: a.prov, size: a.size, denom: a.denom, docs: a.docs, check: a.check, status: a.status,
+        color: a.status === 'Approved' ? '#145F38' : (a.status === 'Rejected' ? '#9E0C24' : '#8A5300'),
+        open: a.status === 'Waiting' || a.status === 'More info requested',
+        approve: () => setApp(i, 'Approved', a.name + ' approved · church code, QR and accounts created'),
+        info: () => setApp(i, 'More info requested', 'Request sent to ' + a.name + ' for the flagged document'),
+        reject: () => setApp(i, 'Rejected', a.name + ' rejected · reason recorded and sent') })),
+      runStatus: s.runApproved ? 'approved' : (open ? 'waiting for fraud decisions' : 'ready for approval'),
+      cannotApprove: open > 0 || s.runApproved, notApproved: !s.runApproved,
+      approveRun: () => { this.setState({ runApproved: true }); this.flash('Run approved · ' + money(payable) + ' will be credited to church Econet accounts'); },
+      exportErp: () => this.flash('Run exported to the ERP and payment systems'),
+      runRows: s.run.map((r, i) => ({ name: r.name, q: r.q.toLocaleString('en-US'), rej: r.rej, claw: r.claw ? '-$' + Math.abs(r.claw).toFixed(2) : '$0.00', flag: r.flag,
+        payText: r.decision === 'withheld' ? 'Withheld' : (r.decision === 'open' ? 'On hold' : money(r.pay)),
+        bg: r.decision === 'open' ? '#FFF6E5' : (r.decision === 'withheld' ? '#FDE8EB' : 'transparent'),
+        needsDecision: r.decision === 'open',
+        release: () => setRun(i, 'released', r.name + ' released after review'),
+        withhold: () => setRun(i, 'withheld', r.name + ' withheld · church told and can dispute within 10 working days') })),
+      queue: s.queue.map((c, i) => ({ title: c.title, church: c.church, kind: c.kind,
+        approve: () => { self.setState({ queue: s.queue.filter((x, j) => j !== i) }); self.flash('"' + c.title + '" published to ' + c.church + ' members'); },
+        reject: () => { self.setState({ queue: s.queue.filter((x, j) => j !== i) }); self.flash('"' + c.title + '" rejected · the church can edit and resubmit'); } })),
+      queueEmpty: s.queue.length === 0,
+      vayaPending: s.vaya === null, vayaRateText: s.vaya === null ? '[RATE]' : '$' + s.vaya.toFixed(2),
+      vayaStatus: s.vaya === null ? 'Awaiting Finance' : 'Approved · live 1 Dec', vayaColor: s.vaya === null ? '#8A5300' : '#145F38',
+      vayaInput: s.vayaInput, onVaya: (e) => this.setState({ vayaInput: e.target.value.replace(/[^0-9.]/g, '') }), vayaInvalid: !(vNum > 0),
+      approveVaya: () => { this.setState({ vaya: vNum }); this.flash('Vaya rate approved · the earning badge shows in the app from 1 Dec'); }
+    };
+  }
+}
+
+return Component;})();
+(function(){
+var HOLE=/\{\{\s*([^}]+?)\s*\}\}/g, WHOLE=/^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/;
+function lookup(p,ctx){p=p.trim();if(p==='true')return true;if(p==='false')return false;if(/^-?\d+(\.\d+)?$/.test(p))return +p;
+  var parts=p.split('.'),v=ctx[parts[0]];for(var i=1;i<parts.length;i++){if(v==null)return undefined;v=v[parts[i]];}return v;}
+function interp(s,ctx){return s.replace(HOLE,function(m,p){var v=lookup(p,ctx);return v==null?'':String(v);});}
+var XHTML='http://www.w3.org/1999/xhtml';
+function renderNodes(nodes,ctx,parent){for(var i=0;i<nodes.length;i++)renderNode(nodes[i],ctx,parent);}
+function renderNode(n,ctx,parent){
+  if(n.nodeType===3){parent.appendChild(document.createTextNode(interp(n.nodeValue,ctx)));return;}
+  if(n.nodeType!==1)return;
+  if(n.tagName==='TEMPLATE'&&n.getAttribute('data-sc')){
+    var kind=n.getAttribute('data-sc');
+    if(kind==='if'){var m=WHOLE.exec(n.getAttribute('value')||'');if(m&&lookup(m[1],ctx))renderNodes(n.content.childNodes,ctx,parent);}
+    else{var m2=WHOLE.exec(n.getAttribute('list')||'');var list=(m2?lookup(m2[1],ctx):[])||[];var as=n.getAttribute('as');
+      list.forEach(function(item,i){var c=Object.create(ctx);c[as]=item;c.$index=i;renderNodes(n.content.childNodes,c,parent);});}
+    return;}
+  var el=n.namespaceURI===XHTML?document.createElement(n.tagName):document.createElementNS(n.namespaceURI,n.tagName);
+  var def={};
+  for(var j=0;j<n.attributes.length;j++){var a=n.attributes[j],name=a.name,val=a.value;
+    if(name.indexOf('hint-')===0)continue;var m3=WHOLE.exec(val);
+    if(name.indexOf('on')===0&&name.length>2){var fn=m3?lookup(m3[1],ctx):null;
+      if(typeof fn==='function'){var ev=name.slice(2);
+        if(ev==='change'){var t=n.tagName,ty=(n.getAttribute('type')||'').toLowerCase();if(t==='TEXTAREA'||(t==='INPUT'&&ty!=='checkbox'&&ty!=='radio'))ev='input';}
+        (function(f){el.addEventListener(ev,function(e){f(e);});})(fn);}
+      continue;}
+    if(m3&&(name==='value'||name==='checked'||name==='disabled')){def[name]=lookup(m3[1],ctx);continue;}
+    if(m3){var v=lookup(m3[1],ctx);if(v===false||v==null)continue;el.setAttribute(name,v===true?'':String(v));continue;}
+    el.setAttribute(name,interp(val,ctx));}
+  renderNodes(n.childNodes,ctx,el);
+  if('value' in def)el.value=def.value==null?'':def.value;
+  if('checked' in def)el.checked=!!def.checked;
+  if('disabled' in def)el.disabled=!!def.disabled;
+  parent.appendChild(el);}
+function Host(key){var C=COMPS[key];this.tpl=document.getElementById('tpl-'+key);this.el=document.getElementById('app-'+key);
+  this.c=new C({});this.c._host=this;this.pending=false;this.lastKey=null;this.render();}
+Host.prototype.schedule=function(){var h=this;if(h.pending)return;h.pending=true;Promise.resolve().then(function(){h.pending=false;h.render();});};
+Host.prototype.render=function(){
+  var ae=document.activeElement,fid=null,ss=null,se=null;
+  if(ae&&ae.id&&this.el.contains(ae)){fid=ae.id;try{ss=ae.selectionStart;se=ae.selectionEnd;}catch(e){}}
+  var st=this.c.state||{},key=(st.screen||'')+'|'+(st.section||'')+'|'+(st.eventId||'');
+  var scrolls=Array.prototype.map.call(this.el.querySelectorAll('.scroll,.wrap'),function(x){return x.scrollTop;});
+  var frag=document.createDocumentFragment();renderNodes(this.tpl.content.childNodes,this.c.renderVals(),frag);
+  this.el.replaceChildren(frag);
+  if(key===this.lastKey){var list=this.el.querySelectorAll('.scroll,.wrap');scrolls.forEach(function(v,i){if(list[i])list[i].scrollTop=v;});}
+  this.lastKey=key;
+  if(fid){var f=document.getElementById(fid);if(f){f.focus();try{if(ss!=null)f.setSelectionRange(ss,se);}catch(e){}}}};
+var hosts={};['start','member','portal','console'].forEach(function(k){hosts[k]=new Host(k);});
+function show(v){document.querySelectorAll('.view').forEach(function(x){x.classList.toggle('on',x.id==='view-'+v);});
+  document.querySelectorAll('.topbar button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-view')===v);});window.scrollTo(0,0);}
+document.querySelectorAll('.topbar button').forEach(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-view'));});});
+var MAP={'Start.dc.html':'start','MemberApp.dc.html':'member','PortalApp.dc.html':'portal','ConsoleApp.dc.html':'console'};
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';
+  if(MAP[h]){e.preventDefault();show(MAP[h]);}else if(h==='#'||/\.dc\.html$/.test(h)){e.preventDefault();}
+  else if(h.charAt(0)==='#'){e.preventDefault();var t=document.getElementById(h.slice(1));if(t)t.scrollIntoView({behavior:'smooth'});}});
+})();
+</script>
+</body>
+</html>
